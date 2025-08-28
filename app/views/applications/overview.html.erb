@@ -1,21 +1,31 @@
-
-
-<%= button_to "Re-Generate CL", generate_cl_application_path(@application, prompt_cl: @llm_prompt_cl),
-              method: :post,
-              class: "btn btn-primary" %>
-
-
-<div id="cl_output">
-<%= simple_format(@cl_message) %>
+<div class="d-flex flex-column align-items-center m-5">
+  <h1>Please review your Cover Letter and Video Pitch</h1>
 </div>
 
+<div class="d-flex justify-content-center w-100">
+  <div class="d-flex flex-column m-3 p-3 border rounded col-6">
+    <h2 class="p-1 h5 mb-3">Review your Cover Letter</h2>
+    <div id="cl_output" class="flex-grow-1 mb-3">
+      <%= simple_format(@cl_message) %>
+    </div>
+    <div class="d-flex justify-content-end">
+      <%= button_to "Regenerate the Cover Letter", generate_cl_application_path(@application, prompt_cl: @llm_prompt_cl),
+                    method: :post,
+                    class: "btn btn-secondary me-2 col-8" %>
+      <%= link_to "Next", application_path(@application), class: "btn btn-primary col-4" %>
+    </div>
+  </div>
 
-<%= button_to "Re-Generate Video", generate_video_application_path(@application, prompt_video: @llm_prompt_video),
-              method: :post,
-              class: "btn btn-primary" %>
-
-
-
-<div id="video_output">
-<%= simple_format(@video_message) %>
+  <div class="d-flex flex-column m-3 p-3 border rounded col-6">
+    <h2 class="p-1 h5 mb-3">Review your Video Pitch</h2>
+    <div id="video_output" class="flex-grow-1 mb-3">
+      <%= simple_format(@video_message) %>
+    </div>
+    <div class="d-flex justify-content-end">
+      <%= button_to "Regenerate Video Pitch", generate_video_application_path(@application, prompt_video: @llm_prompt_video),
+                    method: :post,
+                    class: "btn btn-secondary me-2 col-8" %>
+      <%= link_to "Next", application_path(@application), class: "btn btn-primary col-4" %>
+    </div>
+  </div>
 </div>
