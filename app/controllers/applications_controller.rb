@@ -374,8 +374,6 @@ end
   end
 
   def create_video
-    puts 'UPLOAD VIDEO'
-
     @application = Application.find(params[:id])
     @video = @application.videos.build
     @video.file = params[:video]
