@@ -8,10 +8,10 @@ class CreatePitchJob < ApplicationJob
     chat      = RubyLLM.chat
     chat.with_instructions(prompt)
 
-    response  = chat.ask("Help me generate the pitch with the job description here: #{application.job_d}, my resume is here: #{cv_file}")
+    response = chat.ask("Help me generate the pitch with the job description here: #{application.job_d}, my resume is here: #{cv_file}")
 
     application.update!(video_message: response.content, video_status: "done")
-  rescue => e
+  rescue StandardError => e
     application.update!(video_status: "error: #{e.message}")
     raise
   end

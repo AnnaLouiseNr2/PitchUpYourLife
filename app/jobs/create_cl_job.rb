@@ -8,10 +8,10 @@ class CreateClJob < ApplicationJob
     chat      = RubyLLM.chat
     chat.with_instructions(prompt)
 
-    response  = chat.ask("Help me generate the paragraphs with the job description here: #{application.job_d}, my resume is here: #{cv_file}")
+    response = chat.ask("Help me generate the paragraphs with the job description here: #{application.job_d}, my resume is here: #{cv_file}")
 
     application.update!(cl_message: response.content, cl_status: "done")
-  rescue => e
+  rescue StandardError => e
     application.update!(cl_status: "error: #{e.message}")
     raise
   end

@@ -6,5 +6,4 @@ class Application < ApplicationRecord
   has_many :finals, dependent: :destroy
   has_many :videos, dependent: :destroy
   has_many :traits, dependent: :destroy
-
 end
