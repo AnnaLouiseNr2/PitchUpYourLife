@@ -53,6 +53,8 @@ gem "sassc-rails"
 
 group :development, :test do
   gem "dotenv-rails"
+  gem "brakeman", require: false
+  gem "bundler-audit", require: false
   # See https://guides.rubyonrails.org/debugging_rails_applications.html#debugging-with-the-debug-gem
   gem "debug", platforms: %i[ mri windows ]
 end
