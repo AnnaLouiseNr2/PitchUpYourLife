@@ -3,16 +3,15 @@ class CreateClJob < ApplicationJob
 
   def perform(application_id, prompt)
     application = Application.find(application_id)
-
-    cv_file   = CvTextExtractor.call(application)
-    chat      = RubyLLM.chat
-    chat.with_instructions(prompt)
-
-    response  = chat.ask("Help me generate the paragraphs with the job description here: #{application.job_d}, my resume is here: #{cv_file}")
-
-    application.update!(cl_message: response.content, cl_status: "done")
-  rescue => e
-    application.update!(cl_status: "error: #{e.message}")
-    raise
+    service = AiContentService.new(application)
+    
+    result = service.generate_cover_letter(prompt)
+    
+    if result[:success]
+      application.update!(cl_message: result[:content], cl_status: "done")
+    else
+      application.update!(cl_status: "error: #{result[:error]}")
+      raise StandardError, result[:error]
+    end
   end
 end

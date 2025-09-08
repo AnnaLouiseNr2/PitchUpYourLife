@@ -406,55 +406,31 @@ end
   private
 
  def generate_name(application)
-    cv_file = CvTextExtractor.call(application)
-    prompt = <<~PROMPT
-    From the job description I give to you, I want you to extrat the company name that I'm applying to. RULES: The response
-    should only contain the name of the company, no talking or chatting, I want it to be very straight forward. No response
-    of confirming the creation, no message delivered to me, just the company name, plain texts.
-    PROMPT
-
-    chat = RubyLLM.chat
-    chat.with_instructions(prompt)
-    response = chat.ask("Help me generate the company name with the job description here: #{application.job_d}")
-    message = response.content
-    return message
+    service = AiContentService.new(application)
+    result = service.extract_company_name
+    result[:success] ? result[:content] : "Unknown Company"
   end
 
 
 
    def generate_title(application)
-    cv_file = CvTextExtractor.call(application)
-    prompt = <<~PROMPT
-    From the job description I give to you, I want you to extrat the role that I'm applying to. RULES: The response
-    should only contain the role, no talking or chatting, I want it to be very straight forward. Ex: Chef Backend Developer. No response
-    of confirming the creation, no message delivered to me, just the role title, plain texts.
-    PROMPT
-
-    chat = RubyLLM.chat
-    chat.with_instructions(prompt)
-    response = chat.ask("Help me generate the role title with the job description here: #{application.job_d}")
-    message = response.content
-    return message
+    service = AiContentService.new(application)
+    result = service.extract_job_title
+    result[:success] ? result[:content] : "Unknown Position"
   end
 
 
 
   def generate_cl_internal(prompt)
-    cv_file   = CvTextExtractor.call(@application)
-    chat      = RubyLLM.chat
-    chat.with_instructions(prompt)
-    response  = chat.ask("Help me generate the paragraphs with the job description here: #{@application.job_d}, my resume is here: #{cv_file}, please refer to
-        my resume when generating the contents.")
-    @cl_message = response.content
+    service = AiContentService.new(@application)
+    result = service.generate_cover_letter(prompt)
+    @cl_message = result[:success] ? result[:content] : "Error generating cover letter"
   end
 
   def generate_video_internal(prompt)
-    cv_file   = CvTextExtractor.call(@application)
-    chat      = RubyLLM.chat
-    chat.with_instructions(prompt)
-    response  = chat.ask("Help me generate the pitch with the job description here: #{@application.job_d}, my resume is here: #{cv_file}, please refer to
-        my resume when generating the contents.")
-    @video_message = response.content
+    service = AiContentService.new(@application)
+    result = service.generate_pitch_script(prompt)
+    @video_message = result[:success] ? result[:content] : "Error generating video script"
   end
 
   def application_params
