@@ -23,6 +23,10 @@ module PitchUpYourLife
     config.autoload_lib(ignore: %w(assets tasks))
 
     config.active_job.queue_adapter = :solid_queue
+    
+    # Queue configuration using SSOT ApplicationConfig
+    config.active_job.queue_name_prefix = Rails.env
+    config.active_job.default_queue_name = 'default'
     # Configuration for the application, engines, and railties goes here.
     #
     # These settings can be overridden in specific environments using the files

@@ -1,0 +1,95 @@
+#!/usr/bin/env ruby
+
+# Quality check script that runs the same checks as CI locally
+# Usage: bin/quality_check
+
+puts "🔍 Running quality checks..."
+puts "=" * 50
+
+exit_code = 0
+
+# Colors for output
+def green(text); "\033[32m#{text}\033[0m"; end
+def red(text); "\033[31m#{text}\033[0m"; end
+def yellow(text); "\033[33m#{text}\033[0m"; end
+
+# Helper to run commands and track results
+def run_check(name, command, required: true)
+  print "#{name}... "
+  
+  result = system(command, out: '/dev/null', err: '/dev/null')
+  
+  if result
+    puts green("✅ PASS")
+    return true
+  else
+    puts red("❌ FAIL")
+    puts "  Command: #{command}"
+    return false
+  end
+end
+
+puts "1. Running RuboCop (Style Guide)"
+rubocop_passed = run_check("RuboCop", "bundle exec rubocop --parallel")
+
+puts "\n2. Running Brakeman (Security Scan)"  
+brakeman_passed = run_check("Brakeman", "bundle exec brakeman --quiet")
+
+puts "\n3. Running Bundle Audit (Dependency Security)"
+audit_passed = run_check("Bundle Audit", "bundle exec bundle audit --update")
+
+puts "\n4. Running Test Suite with Coverage"
+test_passed = run_check("Tests", "bin/rails test")
+
+# Check coverage threshold if tests passed
+coverage_passed = true
+if test_passed && File.exist?('coverage/.last_run.json')
+  require 'json'
+  last_run = JSON.parse(File.read('coverage/.last_run.json'))
+  coverage = last_run.dig('result', 'line')
+  
+  if coverage
+    print "Coverage threshold... "
+    if coverage >= 30
+      puts green("✅ PASS (#{coverage.round(2)}%)")
+    else
+      puts red("❌ FAIL (#{coverage.round(2)}% < 30%)")
+      coverage_passed = false
+    end
+  end
+end
+
+# Final results
+puts "\n" + "=" * 50
+puts "📊 QUALITY CHECK RESULTS"
+puts "=" * 50
+
+results = [
+  ["RuboCop", rubocop_passed],
+  ["Brakeman", brakeman_passed], 
+  ["Bundle Audit", audit_passed],
+  ["Tests", test_passed],
+  ["Coverage", coverage_passed]
+]
+
+all_passed = true
+results.each do |name, passed|
+  status = passed ? green("✅ PASS") : red("❌ FAIL")
+  puts "#{name.ljust(15)} #{status}"
+  all_passed = false unless passed
+end
+
+puts "=" * 50
+
+if all_passed
+  puts green("🎉 ALL CHECKS PASSED! Ready to push.")
+  exit 0
+else
+  puts red("🚫 SOME CHECKS FAILED! Fix issues before pushing.")
+  puts yellow("\n💡 Tips:")
+  puts "  - Run 'bundle exec rubocop -a' to auto-fix style issues"
+  puts "  - Review security issues with 'bundle exec brakeman -q'"
+  puts "  - Add tests to improve coverage"
+  puts "  - Update vulnerable dependencies"
+  exit 1
+end

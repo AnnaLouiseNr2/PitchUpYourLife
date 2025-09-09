@@ -3,9 +3,12 @@ Rails.application.routes.draw do
   root to: "pages#home"
   # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html
 
-  # Reveal health status on /up that returns 200 if the app boots with no exceptions, otherwise 500.
-  # Can be used by load balancers and uptime monitors to verify that the app is live.
+  # Health check endpoints for monitoring and orchestration
   get "up" => "rails/health#show", as: :rails_health_check
+  get "health" => "health#show", as: :health_check
+  get "health/detailed" => "health#detailed", as: :detailed_health_check
+  get "ready" => "health#ready", as: :readiness_check
+  get "live" => "health#live", as: :liveness_check
 
   get  "/suggestion", to:"suggestion#new"
   post  "/suggestion", to:"suggestion#create"
@@ -29,6 +32,12 @@ Rails.application.routes.draw do
     post :create_video
     get :generating
     get :status
+
+    # Phase 3: LinkedIn Profile Analysis & ML Predictions
+    get  :linkedin_analysis
+    post :linkedin_analysis
+    get  :ml_predictions
+    post :ml_predictions
   end
 
 

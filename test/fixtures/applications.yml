@@ -1,0 +1,18 @@
+# Application fixtures for testing
+# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  job_d: "Software Engineer position at TechCorp requiring Ruby on Rails experience"
+  name: "TechCorp"
+  title: "Software Engineer"
+  cl_status: "done"
+  video_status: "processing"
+  user: one
+
+two:
+  job_d: "Frontend Developer role at StartupXYZ using React and TypeScript"
+  name: "StartupXYZ"  
+  title: "Frontend Developer"
+  cl_status: "processing"
+  video_status: "pending"
+  user: two

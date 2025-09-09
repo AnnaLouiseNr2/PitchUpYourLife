@@ -1,0 +1,16 @@
+# Traits fixtures for testing
+one:
+  id: 1
+  first: "Professional"
+  second: "Problem Solving" 
+  third: "Mid-level"
+  fourth: "Career Growth"
+  application: one
+
+two:
+  id: 2
+  first: "Casual"
+  second: "Communication"
+  third: "Entry-level"
+  fourth: "Learning"
+  application: two

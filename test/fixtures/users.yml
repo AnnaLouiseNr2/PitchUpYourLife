@@ -1,0 +1,10 @@
+# User fixtures for testing
+# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  email: test@example.com
+  encrypted_password: $2a$04$gF8RfZu2..Bi8N6Fx7LXL.QUNJVWlz7SgRLNWkKdLbXWM8V4QL8xW  # password123
+
+two:
+  email: user2@example.com
+  encrypted_password: $2a$04$gF8RfZu2..Bi8N6Fx7LXL.QUNJVWlz7SgRLNWkKdLbXWM8V4QL8xW  # password456

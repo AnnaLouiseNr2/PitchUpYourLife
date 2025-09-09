@@ -72,6 +72,8 @@ group :test do
   # Use system testing [https://guides.rubyonrails.org/testing.html#system-testing]
   gem "capybara"
   gem "selenium-webdriver"
+  gem "mocha", require: false
+  gem "simplecov", require: false
 end
 
 gem "cloudinary"
@@ -80,5 +82,10 @@ gem "image_processing", "~> 1.2"
 
 gem "ruby_llm"
 gem "pdf-reader"
+
+# Phase 3: ML Features & Advanced Analytics (prioritizing over LinkedIn)
+gem "faraday", "~> 2.7"
+gem "faraday-retry", "~> 2.2"
+gem "httparty", "~> 0.21"
 
 gem "solid_queue"

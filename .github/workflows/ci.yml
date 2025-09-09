@@ -1,0 +1,136 @@
+name: Continuous Integration
+
+on:
+  push:
+    branches: [ main, master, develop ]
+  pull_request:
+    branches: [ main, master, develop ]
+
+env:
+  RAILS_ENV: test
+  POSTGRES_PASSWORD: postgres
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+
+    services:
+      postgres:
+        image: postgres:14
+        env:
+          POSTGRES_PASSWORD: postgres
+          POSTGRES_DB: career_companion_test
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+        ports:
+          - 5432:5432
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+
+    - name: Set up Ruby
+      uses: ruby/setup-ruby@v1
+      with:
+        ruby-version: 3.3.5
+        bundler-cache: true
+
+    - name: Set up Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: '18'
+        cache: 'npm'
+
+    - name: Install dependencies
+      run: |
+        sudo apt-get update
+        sudo apt-get install -y postgresql-client libpq-dev
+        bundle install --jobs 4 --retry 3
+        npm install
+
+    - name: Setup test database
+      env:
+        DATABASE_URL: postgres://postgres:postgres@localhost:5432/career_companion_test
+        RAILS_MASTER_KEY: ${{ secrets.RAILS_MASTER_KEY }}
+      run: |
+        bin/rails db:create
+        bin/rails db:schema:load
+
+    - name: Precompile assets
+      env:
+        RAILS_MASTER_KEY: ${{ secrets.RAILS_MASTER_KEY }}
+      run: bin/rails assets:precompile
+
+    - name: Run tests
+      env:
+        DATABASE_URL: postgres://postgres:postgres@localhost:5432/career_companion_test
+        RAILS_MASTER_KEY: ${{ secrets.RAILS_MASTER_KEY }}
+      run: |
+        bin/rails test
+        
+    - name: Generate coverage report
+      env:
+        DATABASE_URL: postgres://postgres:postgres@localhost:5432/career_companion_test
+        RAILS_MASTER_KEY: ${{ secrets.RAILS_MASTER_KEY }}
+      run: |
+        rake test:coverage
+
+    - name: Upload coverage reports to Codecov
+      uses: codecov/codecov-action@v3
+      env:
+        CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
+      with:
+        file: ./coverage/.resultset.json
+        fail_ci_if_error: false
+
+  security:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+
+    - name: Set up Ruby
+      uses: ruby/setup-ruby@v1
+      with:
+        ruby-version: 3.3.5
+        bundler-cache: true
+
+    - name: Run security checks
+      run: |
+        bundle exec brakeman --quiet --format json --output brakeman-report.json || true
+        bundle exec bundle audit --update || true
+
+    - name: Upload security reports
+      uses: actions/upload-artifact@v3
+      if: always()
+      with:
+        name: security-reports
+        path: |
+          brakeman-report.json
+
+  code_quality:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+
+    - name: Set up Ruby
+      uses: ruby/setup-ruby@v1
+      with:
+        ruby-version: 3.3.5
+        bundler-cache: true
+
+    - name: Run RuboCop
+      run: |
+        bundle exec rubocop --format json --out rubocop-report.json || true
+        
+    - name: Upload code quality reports
+      uses: actions/upload-artifact@v3
+      if: always()
+      with:
+        name: code-quality-reports
+        path: |
+          rubocop-report.json

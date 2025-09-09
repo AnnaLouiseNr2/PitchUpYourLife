@@ -1,0 +1,94 @@
+name: Deploy
+
+on:
+  push:
+    branches: [main, master]
+  workflow_dispatch: # Allow manual deployment
+
+env:
+  RAILS_ENV: production
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    
+    services:
+      postgres:
+        image: postgres:14
+        env:
+          POSTGRES_PASSWORD: postgres
+          POSTGRES_DB: career_companion_test
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+        ports:
+          - 5432:5432
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+
+    - name: Set up Ruby
+      uses: ruby/setup-ruby@v1
+      with:
+        ruby-version: 3.3.5
+        bundler-cache: true
+
+    - name: Install dependencies
+      run: |
+        sudo apt-get update
+        sudo apt-get install -y postgresql-client libpq-dev
+        bundle install --jobs 4 --retry 3
+
+    - name: Setup test database
+      env:
+        DATABASE_URL: postgres://postgres:postgres@localhost:5432/career_companion_test
+        RAILS_ENV: test
+      run: |
+        bin/rails db:create
+        bin/rails db:schema:load
+
+    - name: Run full test suite
+      env:
+        DATABASE_URL: postgres://postgres:postgres@localhost:5432/career_companion_test
+        RAILS_ENV: test
+      run: |
+        bin/rails test
+        
+    - name: Verify coverage threshold
+      run: |
+        if [ -f coverage/.last_run.json ]; then
+          coverage=$(grep -o '"line":[0-9.]*' coverage/.last_run.json | cut -d':' -f2)
+          if (( $(echo "$coverage < 30" | bc -l) )); then
+            echo "❌ Deployment blocked: Coverage ${coverage}% below threshold"
+            exit 1
+          fi
+        fi
+
+  # Placeholder for actual deployment steps
+  deploy:
+    needs: test
+    runs-on: ubuntu-latest
+    if: github.ref == 'refs/heads/main' || github.ref == 'refs/heads/master'
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+
+    - name: Deploy to production
+      run: |
+        echo "🚀 Deploying to production..."
+        echo "This would typically include:"
+        echo "  - Building Docker images"
+        echo "  - Pushing to container registry"
+        echo "  - Deploying to Heroku/Railway/AWS/etc"
+        echo "  - Running production migrations"
+        echo "  - Health checks"
+        echo "✅ Deployment complete!"
+
+    - name: Notify deployment
+      run: |
+        echo "📢 Deployment notification sent"
+        # Here you could integrate with Slack, Discord, email, etc.

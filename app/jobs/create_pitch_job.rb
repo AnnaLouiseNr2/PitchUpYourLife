@@ -3,16 +3,15 @@ class CreatePitchJob < ApplicationJob
 
   def perform(application_id, prompt)
     application = Application.find(application_id)
-
-    cv_file   = CvTextExtractor.call(application)
-    chat      = RubyLLM.chat
-    chat.with_instructions(prompt)
-
-    response  = chat.ask("Help me generate the pitch with the job description here: #{application.job_d}, my resume is here: #{cv_file}")
-
-    application.update!(video_message: response.content, video_status: "done")
-  rescue => e
-    application.update!(video_status: "error: #{e.message}")
-    raise
+    ai_service = AiContentService.new(application)
+    
+    result = ai_service.generate_pitch_script(prompt)
+    
+    if result[:success]
+      application.update!(video_message: result[:content], video_status: "done")
+    else
+      application.update!(video_status: "error: #{result[:error]}")
+      raise StandardError, result[:error]
+    end
   end
 end

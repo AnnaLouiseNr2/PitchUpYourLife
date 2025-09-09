@@ -15,37 +15,13 @@
             <h2 class="h5 mb-4 text-center"><strong>Your Selections</strong></h2>
             <div class="d-flex flex-column flex-grow-1">
               <div class="flex-grow-1 p-2 overflow-auto">
-                <div class="mb-3">
-                  <h6 class="small text-muted mb-2">Tone</h6>
-                  <p class="small mb-0"><%= @trait.first || "Not selected" %></p>
-                </div>
-                <hr class="my-3" style="border-color: #e0e0e0;">
-                <div class="mb-3">
-                  <h6 class="small text-muted mb-2">Professional Strength</h6>
-                  <p class="small mb-0">
-                    <% if @trait.second == "Other" %>
-                      <%= @trait.second || "Not specified" %>
-                    <% else %>
-                      <%= @trait.second || "Not selected" %>
-                    <% end %>
-                  </p>
-                </div>
-                <hr class="my-3" style="border-color: #e0e0e0;">
-                <div class="mb-3">
-                  <h6 class="small text-muted mb-2">Experience Level</h6>
-                  <p class="small mb-0"><%= @trait.third || "Not selected" %></p>
-                </div>
-                <hr class="my-3" style="border-color: #e0e0e0;">
-                <div class="mb-3">
-                  <h6 class="small text-muted mb-2">Career Motivation</h6>
-                  <p class="small mb-0">
-                    <% if @trait.fourth == "Other" %>
-                      <%= @trait.fourth || "Not specified" %>
-                    <% else %>
-                      <%= @trait.fourth || "Not selected" %>
-                    <% end %>
-                  </p>
-                </div>
+                <% @trait_presenter.trait_data.each do |trait_item| %>
+                  <div class="mb-3">
+                    <h6 class="small text-muted mb-2"><%= trait_item[:label] %></h6>
+                    <p class="small mb-0"><%= trait_item[:value] %></p>
+                  </div>
+                  <hr class="my-3" style="border-color: #e0e0e0;">
+                <% end %>
               </div>
             </div>
           </div>

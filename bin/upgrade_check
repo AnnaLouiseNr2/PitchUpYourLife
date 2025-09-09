@@ -1,0 +1,158 @@
+#!/usr/bin/env ruby
+
+# Rails upgrade readiness checker
+# Usage: bin/upgrade_check
+
+require 'bundler'
+require 'json'
+
+puts "🔍 Rails Upgrade Readiness Check"
+puts "=" * 50
+
+def green(text); "\033[32m#{text}\033[0m"; end
+def red(text); "\033[31m#{text}\033[0m"; end
+def yellow(text); "\033[33m#{text}\033[0m"; end
+
+# Check current versions
+def check_versions
+  puts "📋 Current Environment"
+  puts "-" * 20
+  
+  # Rails version
+  rails_version = `bin/rails version 2>/dev/null`.strip rescue "Unknown"
+  puts "Rails: #{rails_version}"
+  
+  # Ruby version
+  ruby_version = RUBY_VERSION
+  puts "Ruby: #{ruby_version}"
+  
+  # Bundler version  
+  bundler_version = Bundler::VERSION
+  puts "Bundler: #{bundler_version}"
+  
+  puts
+end
+
+# Check for deprecation warnings
+def check_deprecations
+  puts "⚠️  Deprecation Check"
+  puts "-" * 20
+  
+  issues = []
+  
+  # Check for Rails.application.secrets usage
+  secrets_files = `grep -r "Rails.application.secrets" app/ config/ 2>/dev/null`.strip
+  unless secrets_files.empty?
+    issues << "Rails.application.secrets found (deprecated)"
+  end
+  
+  # Check for unprocessable_entity usage
+  entity_files = `grep -r "unprocessable_entity" app/ 2>/dev/null`.strip
+  unless entity_files.empty?
+    issues << "unprocessable_entity status found (deprecated)"  
+  end
+  
+  if issues.empty?
+    puts green("✅ No critical deprecations found")
+  else
+    issues.each { |issue| puts red("❌ #{issue}") }
+  end
+  
+  puts
+end
+
+# Check test coverage
+def check_coverage
+  puts "📊 Test Coverage"
+  puts "-" * 20
+  
+  if File.exist?('coverage/.last_run.json')
+    coverage_data = JSON.parse(File.read('coverage/.last_run.json'))
+    coverage = coverage_data.dig('result', 'line') || 0
+    
+    if coverage >= 50
+      puts green("✅ Coverage: #{coverage.round(2)}% (Good for upgrade)")
+    elsif coverage >= 30
+      puts yellow("⚠️  Coverage: #{coverage.round(2)}% (Minimum for upgrade)")
+    else
+      puts red("❌ Coverage: #{coverage.round(2)}% (Too low for safe upgrade)")
+    end
+  else
+    puts red("❌ No coverage report found. Run tests first.")
+  end
+  
+  puts
+end
+
+# Check gem compatibility
+def check_gems
+  puts "💎 Gem Compatibility"
+  puts "-" * 20
+  
+  # Key gems to check
+  key_gems = %w[devise ruby_llm cloudinary solid_queue pg]
+  
+  Bundler.load.specs.each do |spec|
+    if key_gems.include?(spec.name)
+      puts "#{spec.name}: #{spec.version}"
+    end
+  end
+  
+  puts
+end
+
+# Check database migrations
+def check_migrations
+  puts "🗃️  Database Status"
+  puts "-" * 20
+  
+  begin
+    pending = `bin/rails db:migrate:status 2>/dev/null | grep "down" | wc -l`.strip.to_i
+    if pending > 0
+      puts red("❌ #{pending} pending migrations found")
+    else
+      puts green("✅ All migrations up to date")
+    end
+  rescue
+    puts yellow("⚠️  Could not check migration status")
+  end
+  
+  puts
+end
+
+# Generate upgrade checklist
+def generate_checklist
+  puts "📝 Pre-Upgrade Checklist"
+  puts "-" * 20
+  
+  checklist = [
+    "[ ] Create backup of production database",
+    "[ ] Create upgrade branch: git checkout -b rails-7.2-upgrade", 
+    "[ ] Update Rails version in Gemfile",
+    "[ ] Run bundle update rails",
+    "[ ] Run bin/rails app:update",
+    "[ ] Fix deprecation warnings", 
+    "[ ] Run full test suite",
+    "[ ] Test in staging environment",
+    "[ ] Update CI/CD configurations",
+    "[ ] Prepare rollback plan",
+    "[ ] Schedule maintenance window",
+    "[ ] Deploy to production"
+  ]
+  
+  checklist.each { |item| puts item }
+  puts
+end
+
+# Run all checks
+check_versions
+check_deprecations  
+check_coverage
+check_gems
+check_migrations
+generate_checklist
+
+puts "=" * 50
+puts green("🚀 Upgrade check complete!")
+puts yellow("💡 Review RAILS_UPGRADE_PLAN.md for detailed guidance")
+puts "=" * 50
