@@ -10,12 +10,12 @@ class ApplicationsController < ApplicationController
   end
 
   def show
-    @application = Application.find(params[:id])
+    @application = current_user.applications.find(params[:id])
     @final = @application.finals.last
     @trait = @application.traits.last
 
-    @final_cl = @final.cl
-    @final_pitch = @final.pitch
+    @final_cl = @final&.cl
+    @final_pitch = @final&.pitch
   end
 
   def create
@@ -35,24 +35,28 @@ class ApplicationsController < ApplicationController
 
 
   def destroy
-    @application = Application.find(params[:id])
+    @application = current_user.applications.find(params[:id])
     if @application.destroy
-    redirect_to applications_path, notice: "Application deleted.", status: :see_other
-  else
-    redirect_to applications_path, alert: "Could not delete.", status: :unprocessable_entity
+      redirect_to applications_path, notice: "Application deleted.", status: :see_other
+    else
+      redirect_to applications_path, alert: "Could not delete.", status: :unprocessable_entity
+    end
   end
-end
 
 
   def trait
-    @application = Application.find(params[:id])
+    @application = current_user.applications.find(params[:id])
     @trait = @application.traits.last
     return unless request.patch?
 
-    @trait.update_columns(first: params[:trait_choice1])
-    @trait.update_columns(second: (params[:trait_choice2] == "Other" ? params[:trait_choice2_other] : params[:trait_choice2]))
-    @trait.update_columns(third: params[:trait_choice3])
-    @trait.update_columns(fourth: (params[:trait_choice4] == "Other" ? params[:trait_choice4_other] : params[:trait_choice4]))
+    trait_params = {
+      first: params[:trait_choice1],
+      second: (params[:trait_choice2] == "Other" ? params[:trait_choice2_other] : params[:trait_choice2]),
+      third: params[:trait_choice3],
+      fourth: (params[:trait_choice4] == "Other" ? params[:trait_choice4_other] : params[:trait_choice4])
+    }
+
+    @trait.update!(trait_params)
 
     # @traits = [session[:trait_choice1], session[:trait_choice2], session[:trait_choice3], session[:trait_choice4]]
 
@@ -180,7 +184,7 @@ end
 
   def overview
     # @traits = [session[:trait_choice1], session[:trait_choice2], session[:trait_choice3], session[:trait_choice4]]
-    @application = Application.find(params[:id])
+    @application = current_user.applications.find(params[:id])
     @trait = @application.traits.last
 
     @llm_prompt_cl = <<~PROMPT
@@ -288,7 +292,7 @@ PROMPT
 end
 
 def status
-  app = Application.find(params[:id])
+  app = current_user.applications.find(params[:id])
   render json: {
     cl_status: app.cl_status,
     video_status: app.video_status
@@ -296,12 +300,12 @@ def status
 end
 
 def generating
-  @application = Application.find(params[:id])
+  @application = current_user.applications.find(params[:id])
 end
 
 
   def generate_cl
-    @application = Application.find(params[:id])
+    @application = current_user.applications.find(params[:id])
     cv_file = CvTextExtractor.call(@application)
     prompt = params[:prompt_cl]
     chat = RubyLLM.chat
@@ -324,7 +328,7 @@ end
 
 
   def generate_video
-    @application = Application.find(params[:id])
+    @application = current_user.applications.find(params[:id])
     cv_file = CvTextExtractor.call(@application)
     prompt = params[:prompt_video]
     chat = RubyLLM.chat
@@ -348,7 +352,7 @@ end
   end
 
   def final_cl
-    @application = Application.find(params[:id])
+    @application = current_user.applications.find(params[:id])
     @final_cl = params[:final_cl].to_s
     @final = @application.finals.last
     @final.cl = @final_cl
@@ -356,7 +360,7 @@ end
   end
 
   def final_pitch
-    @application = Application.find(params[:id])
+    @application = current_user.applications.find(params[:id])
     @final_pitch = params[:final_pitch].to_s
     @final = @application.finals.last
     @final.pitch = @final_pitch
@@ -364,7 +368,7 @@ end
   end
 
   def video_page
-    @application = Application.find(params[:id])
+    @application = current_user.applications.find(params[:id])
     @video = @application.videos.last
     @cloudinary_url = @video.file.url if @video&.file&.attached?
   end
@@ -376,7 +380,7 @@ end
   def create_video
     puts 'UPLOAD VIDEO'
 
-    @application = Application.find(params[:id])
+    @application = current_user.applications.find(params[:id])
     @video = @application.videos.build
     @video.file = params[:video]
 
@@ -459,5 +463,9 @@ end
 
   def application_params
     params.require(:application).permit(:job_d, :cv)
+  end
+
+  def trait_params
+    params.permit(:trait_choice1, :trait_choice2, :trait_choice2_other, :trait_choice3, :trait_choice4, :trait_choice4_other)
   end
 end

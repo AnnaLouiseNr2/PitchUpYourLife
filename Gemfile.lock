@@ -88,8 +88,6 @@ GEM
       mutex_m
       securerandom (>= 0.3)
       tzinfo (~> 2.0)
-    addressable (2.8.7)
-      public_suffix (>= 2.0.2, < 7.0)
     afm (1.0.0)
     autoprefixer-rails (10.4.21.0)
       execjs (~> 2)
@@ -103,15 +101,6 @@ GEM
     bootstrap (5.3.5)
       popper_js (>= 2.11.8, < 3)
     builder (3.3.0)
-    capybara (3.40.0)
-      addressable
-      matrix
-      mini_mime (>= 0.1.3)
-      nokogiri (~> 1.11)
-      rack (>= 1.6.0)
-      rack-test (>= 0.6.3)
-      regexp_parser (>= 1.5, < 3.0)
-      xpath (~> 3.2)
     cloudinary (2.3.1)
       faraday (>= 2.0.1, < 3.0.0)
       faraday-follow_redirects (~> 0.3.0)
@@ -197,7 +186,6 @@ GEM
       net-pop
       net-smtp
     marcel (1.0.4)
-    matrix (0.4.3)
     mini_magick (5.3.1)
       logger
     mini_mime (1.1.5)
@@ -255,7 +243,6 @@ GEM
     psych (5.2.6)
       date
       stringio
-    public_suffix (6.0.2)
     puma (6.6.1)
       nio4r (~> 2.0)
     raabro (1.4.0)
@@ -301,13 +288,12 @@ GEM
     rdoc (6.14.2)
       erb
       psych (>= 4.0.0)
-    regexp_parser (2.11.2)
     reline (0.6.2)
       io-console (~> 0.5)
     responders (3.1.1)
       actionpack (>= 5.2)
       railties (>= 5.2)
-    rexml (3.4.1)
+    rexml (3.4.4)
     ruby-rc4 (0.1.5)
     ruby-vips (2.2.5)
       ffi (~> 1.12)
@@ -321,7 +307,6 @@ GEM
       faraday-retry (>= 1)
       marcel (~> 1.0)
       zeitwerk (~> 2)
-    rubyzip (3.0.2)
     sassc (2.4.0)
       ffi (~> 1.9)
     sassc-rails (2.1.2)
@@ -330,13 +315,8 @@ GEM
       sprockets (> 3.0)
       sprockets-rails
       tilt
+    secure_headers (7.1.0)
     securerandom (0.4.1)
-    selenium-webdriver (4.35.0)
-      base64 (~> 0.2)
-      logger (~> 1.4)
-      rexml (~> 3.2, >= 3.2.5)
-      rubyzip (>= 1.2.2, < 4.0)
-      websocket (~> 1.0)
     solid_queue (1.2.1)
       activejob (>= 7.1)
       activerecord (>= 7.1)
@@ -373,13 +353,10 @@ GEM
       activemodel (>= 6.0.0)
       bindex (>= 0.4.0)
       railties (>= 6.0.0)
-    websocket (1.2.11)
     websocket-driver (0.8.0)
       base64
       websocket-extensions (>= 0.1.0)
     websocket-extensions (0.1.5)
-    xpath (3.2.0)
-      nokogiri (~> 1.8)
     zeitwerk (2.7.3)
 
 PLATFORMS
@@ -399,7 +376,6 @@ DEPENDENCIES
   autoprefixer-rails
   bootsnap
   bootstrap (~> 5.3)
-  capybara
   cloudinary
   debug
   devise
@@ -412,9 +388,10 @@ DEPENDENCIES
   pg (~> 1.1)
   puma (>= 5.0)
   rails (~> 7.1.5, >= 7.1.5.2)
+  rexml (>= 3.4.2)
   ruby_llm
   sassc-rails
-  selenium-webdriver
+  secure_headers
   simple_form!
   solid_queue
   sprockets-rails
@@ -424,7 +401,7 @@ DEPENDENCIES
   web-console
 
 RUBY VERSION
-   ruby 3.3.5p100
+   ruby 3.2.2p53
 
 BUNDLED WITH
    2.6.9

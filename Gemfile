@@ -68,11 +68,6 @@ group :development do
   # gem "spring"
 end
 
-group :test do
-  # Use system testing [https://guides.rubyonrails.org/testing.html#system-testing]
-  gem "capybara"
-  gem "selenium-webdriver"
-end
 
 gem "cloudinary"
 gem "activestorage-cloudinary-service"
@@ -82,3 +77,9 @@ gem "ruby_llm"
 gem "pdf-reader"
 
 gem "solid_queue"
+
+# Security: Fix REXML DoS vulnerability CVE-2025-58767
+gem "rexml", ">= 3.4.2"
+
+# Security gems
+gem "secure_headers"
