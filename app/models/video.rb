@@ -3,8 +3,25 @@ class Video < ApplicationRecord
   has_one_attached :file
 
   # File upload security validations
-  validates :file, attached: true, content_type: {
-    in: %w[video/mp4 video/quicktime video/x-msvideo video/webm],
-    message: 'must be a video file (MP4, MOV, AVI, or WebM)'
-  }, size: { less_than: 100.megabytes, message: 'must be less than 100MB' }
+  validate :file_content_type
+  validate :file_size
+
+  private
+
+  def file_content_type
+    return unless file.attached?
+
+    allowed_types = %w[video/mp4 video/quicktime video/x-msvideo video/webm]
+    unless allowed_types.include?(file.blob.content_type)
+      errors.add(:file, 'must be a video file (MP4, MOV, AVI, or WebM)')
+    end
+  end
+
+  def file_size
+    return unless file.attached?
+
+    if file.blob.byte_size > 100.megabytes
+      errors.add(:file, 'must be less than 100MB')
+    end
+  end
 end

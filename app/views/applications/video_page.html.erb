@@ -1,87 +1,775 @@
+<!-- Page Header -->
 <div class="page-header">
-  <h1 class="page-title">Record Your Video Pitch</h1>
-  <h2 class="page-subtitle">
-    Record your video pitch using the Teleprompter
-  </h2>
+  <div class="container">
+    <div class="row">
+      <div class="col-12">
+        <h1 class="main-title">Record Your Video Pitch</h1>
+        <h2 class="main-subtitle">
+          Use the teleprompter to record your personalized video pitch
+        </h2>
+      </div>
+    </div>
+  </div>
 </div>
-<div class="container-fluid" data-controller="video" data-video-application-id-value="<%= params[:id] %>">
-  <div class="row justify-content-center">
-    <div class="col-8 col-lg-8 col-xl-6">
-      <div class="p-4 rounded-4 shadow bg-white border">
-        <div class="d-flex flex-column justify-content-center align-items-center p-1 m-1">
-          <div class="position-relative border rounded-4 shadow-sm bg-dark text-white mb-3" style="width: 100%; height: 450px;">
-            <video id="live" data-video-target="display" autoplay muted playsinline style="width:100%; height:100%; object-fit:cover; border-radius:16px;"></video>
-            <div data-video-target="teleprompter" style="
-                 position:absolute;
-                 top:20px;
-                 left:50%;
-                 transform:translateX(-50%);
-                 width:50%;
-                 height:60px;
-                 overflow:hidden;
-                 color:white;
-                 font-size:1.2rem;
-                 line-height:1.5;
-                 text-align:center;
-                 pointer-events:none;
-                 text-shadow:1px 1px 3px rgba(0,0,0,0.7); font-weight:500;">
-              <strong>TELEPROMPTER:</strong>
-              <div style="margin-top:5px;">
-                <%= simple_format(@application.video_message) %>
+
+<!-- Main Content -->
+<div class="main-content">
+  <div class="container">
+    <div class="row justify-content-center">
+      <div class="col-12" style="max-width: 1400px; margin: 0 auto;">
+        <div class="form-wrapper" data-controller="video" data-video-application-id-value="<%= params[:id] %>">
+          <!-- Video Recording Section -->
+          <div class="form-section">
+            <div class="section-header">
+              <div class="section-icon">
+                <i class="bi bi-camera-video"></i>
+              </div>
+              <div class="section-content">
+                <h3 class="section-title">Video Recording</h3>
+                <p class="section-description">Record your video pitch with the teleprompter</p>
+              </div>
+            </div>
+
+            <div class="video-recording-area">
+              <div class="video-container">
+                <video id="live"
+                       data-video-target="display"
+                       autoplay
+                       muted
+                       playsinline
+                       class="video-preview">
+                </video>
+
+                <div data-video-target="teleprompter" class="teleprompter-overlay">
+                  <div class="teleprompter-header">TELEPROMPTER</div>
+                  <div class="teleprompter-content">
+                    <%= simple_format(@application.video_message) %>
+                  </div>
+                </div>
+              </div>
+
+              <div class="recording-controls">
+                <button type="button"
+                        id="start"
+                        data-video-target="recordButton"
+                        class="btn-primary recording-btn">
+                  <i class="bi bi-record-circle me-2"></i>
+                  Start Recording
+                </button>
+                <button type="button"
+                        id="stop"
+                        class="btn-danger recording-btn">
+                  <i class="bi bi-stop-circle me-2"></i>
+                  Stop Recording
+                </button>
               </div>
             </div>
           </div>
-          <div class="d-flex gap-2 mb-3" style="width: 100%;">
-            <button type="button" id="start" data-video-target="recordButton" class="btn btn-primary btn-lg flex-fill">Start Recording</button>
-            <button type="button" id="stop" class="btn btn-danger btn-lg flex-fill">Stop Recording</button>
+
+          <!-- Uploaded Video Section -->
+          <div class="form-section">
+            <div class="section-header">
+              <div class="section-icon">
+                <i class="bi bi-play-circle"></i>
+              </div>
+              <div class="section-content">
+                <h3 class="section-title">Your Recorded Video</h3>
+                <p class="section-description">Review and manage your video pitch</p>
+              </div>
+            </div>
+
+            <div class="uploaded-video-area" data-video-target="uploaded">
+              <% if @video&.file&.attached? %>
+                <div class="video-player-container">
+                  <video controls class="video-player">
+                    <source src="<%= url_for(@video.file) %>" type="<%= @video.file.content_type %>">
+                    Your browser does not support the video tag.
+                  </video>
+                </div>
+
+                <div class="video-link-section">
+                  <h6 class="link-label">Video Link</h6>
+                  <div class="link-controls">
+                    <% cloudinary_url = url_for(@video.file) %>
+                    <input id="videoLink"
+                           type="text"
+                           readonly
+                           value="<%= cloudinary_url %>"
+                           class="link-input">
+                    <button type="button"
+                            class="btn-secondary link-btn"
+                            onclick="navigator.clipboard.writeText(document.getElementById('videoLink').value)">
+                      <i class="bi bi-clipboard me-1"></i>
+                      Copy
+                    </button>
+                    <%= link_to cloudinary_url, target: "_blank", rel: "noopener", class: "btn-primary link-btn" do %>
+                      <i class="bi bi-box-arrow-up-right me-1"></i>
+                      Open
+                    <% end %>
+                  </div>
+                </div>
+              <% else %>
+                <div class="no-video-state">
+                  <div class="no-video-icon">
+                    <i class="bi bi-camera-video"></i>
+                  </div>
+                  <h5 class="no-video-title">No video recorded yet</h5>
+                  <p class="no-video-description">Use the recording controls above to capture your video pitch</p>
+                </div>
+              <% end %>
+            </div>
           </div>
-        </div>
-        <!-- Uploaded Video Section -->
-        <div class="mt-4">
-          <h5 class="text-center mb-3">Uploaded Video</h5>
-          <div data-video-target="uploaded">
-            <% if @video&.file&.attached? %>
-              <video width="100%" height="300" controls style="border-radius:6px;">
-                <source src="<%= url_for(@video.file) %>" type="<%= @video.file.content_type %>">
-                Your browser does not support the video tag.
-              </video>
-              <div class="mt-2" id="cloudinary-link">
-                <label class="form-label d-block">Cloudinary link</label>
-                <div style="display:flex;gap:8px;align-items:center;">
-                  <% cloudinary_url = url_for(@video.file) %>
-                  <input id="videoLink"
-                         type="text"
-                         readonly
-                         value="<%= cloudinary_url %>"
-                         class="form-control"
-                         style="flex:1;">
-                  <button type="button"
-                          class="btn btn-outline-secondary"
-                          onclick="navigator.clipboard.writeText(document.getElementById('videoLink').value)">
-                    Copy
-                  </button>
-                  <%= link_to "Open", cloudinary_url, target: "_blank", rel: "noopener", class: "btn btn-primary" %>
+
+          <!-- Action Buttons -->
+          <div class="action-buttons">
+            <div class="button-group">
+              <%= link_to overview_application_path(@application), class: "btn-secondary" do %>
+                <i class="bi bi-arrow-left me-2"></i>
+                <span class="d-none d-sm-inline">Back to Generate</span>
+                <span class="d-sm-none">Back</span>
+              <% end %>
+              <%= link_to application_path(@application),
+                  class: "btn-primary",
+                  data: { video_target: "finishButton" } do %>
+                <span class="d-none d-sm-inline">Finish Application</span>
+                <span class="d-sm-none">Finish</span>
+                <i class="bi bi-check-circle ms-2"></i>
+              <% end %>
+            </div>
+
+            <!-- Progress Bar -->
+            <div class="progress-bar-wrapper">
+              <div class="progress-bar">
+                <div class="progress-fill" style="width: 100%;"></div>
+              </div>
+              <div class="progress-steps">
+                <div class="progress-step completed">
+                  <div class="step-circle">
+                    <i class="bi bi-check"></i>
+                  </div>
+                  <span class="step-label">Upload Files</span>
+                </div>
+                <div class="progress-step completed">
+                  <div class="step-circle">
+                    <i class="bi bi-check"></i>
+                  </div>
+                  <span class="step-label">Personalize</span>
+                </div>
+                <div class="progress-step completed">
+                  <div class="step-circle">
+                    <i class="bi bi-check"></i>
+                  </div>
+                  <span class="step-label">Generate</span>
+                </div>
+                <div class="progress-step active">
+                  <div class="step-circle">
+                    <span>4</span>
+                  </div>
+                  <span class="step-label">Record</span>
                 </div>
               </div>
-            <% else %>
-              <p class="text-center text-muted">No video uploaded yet.</p>
-            <% end %>
+            </div>
+
+            <!-- Tips Banner -->
+            <div class="tips-banner">
+              <div class="tips-banner-header">
+                <i class="bi bi-lightbulb-fill"></i>
+                <h3>Video recording tips</h3>
+              </div>
+              <ul class="tips-list">
+                <li>Look directly at the camera for better connection</li>
+                <li>Speak clearly and at a comfortable pace</li>
+                <li>Use the teleprompter to stay on message</li>
+                <li>Record in a quiet, well-lit environment</li>
+              </ul>
+            </div>
+
+            <div class="security-note">
+              <i class="bi bi-shield-check"></i>
+              <small>Your video is stored securely and remains private</small>
+            </div>
           </div>
         </div>
       </div>
     </div>
   </div>
-    <div class="d-flex justify-content-center align-items-center gap-3" style="padding-top: 3rem; padding-bottom: 3rem;">
-    <%= link_to "← Back", overview_application_path(@application), class: "next-button" %>
-    <%= link_to "Finish Application →", application_path(@application),
-        class: "next-button enabled-state",
-        data: { video_target: "finishButton" } %>
-  </div>
 </div>
 
-<div class="pb-3"></div>
-
 <style>
-  .shadow-sm { box-shadow: 0 0.125rem 0.25rem rgba(0,0,0,0.075) !important; }
-  button:disabled { cursor: not-allowed; opacity:0.6; }
+/* Page Header */
+.page-header {
+  background: #f8f9fa;
+  padding: 0.75rem 0 0;
+  text-align: center;
+}
+
+.main-title {
+  font-size: 2rem;
+  font-weight: 700;
+  color: #2d3748;
+  margin-bottom: 0.125rem;
+  text-align: center;
+}
+
+.main-subtitle {
+  font-size: 0.95rem;
+  color: #718096;
+  max-width: 500px;
+  margin: 0 auto 0 auto;
+  line-height: 1.4;
+  text-align: center;
+}
+
+.main-content {
+  padding: 1rem 0;
+  background: #f8f9fa;
+}
+
+/* Form Layout */
+.form-wrapper {
+  background: white;
+  border-radius: 20px;
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+  overflow: hidden;
+}
+
+.form-section {
+  padding: 2rem;
+  border-bottom: 1px solid #e2e8f0;
+}
+
+.form-section:last-of-type {
+  border-bottom: none;
+}
+
+.section-header {
+  display: flex;
+  align-items: flex-start;
+  margin-bottom: 1.5rem;
+}
+
+.section-icon {
+  width: 48px;
+  height: 48px;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-right: 1rem;
+  flex-shrink: 0;
+}
+
+.section-icon i {
+  font-size: 1.25rem;
+  color: white;
+}
+
+.section-content {
+  flex: 1;
+}
+
+.section-title {
+  font-size: 1.25rem;
+  font-weight: 600;
+  color: #2d3748;
+  margin: 0 0 0.25rem 0;
+}
+
+.section-description {
+  color: #718096;
+  margin: 0;
+  font-size: 0.95rem;
+}
+
+/* Video Recording */
+.video-recording-area {
+  margin-top: 1.5rem;
+}
+
+.video-container {
+  position: relative;
+  background: #000;
+  border-radius: 16px;
+  overflow: hidden;
+  margin-bottom: 1.5rem;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+}
+
+.video-preview {
+  width: 100%;
+  height: 450px;
+  object-fit: cover;
+  display: block;
+}
+
+.teleprompter-overlay {
+  position: absolute;
+  top: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 60%;
+  max-height: 150px;
+  overflow-y: auto;
+  color: white;
+  font-size: 1.1rem;
+  line-height: 1.5;
+  text-align: center;
+  pointer-events: none;
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.8);
+  background: rgba(0, 0, 0, 0.3);
+  border-radius: 12px;
+  padding: 1rem;
+}
+
+.teleprompter-header {
+  font-weight: 700;
+  font-size: 0.9rem;
+  letter-spacing: 0.1em;
+  margin-bottom: 0.5rem;
+  color: #ffd700;
+}
+
+.teleprompter-content {
+  font-weight: 500;
+}
+
+.recording-controls {
+  display: flex;
+  gap: 1rem;
+  justify-content: center;
+}
+
+.recording-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.875rem 2rem;
+  border-radius: 12px;
+  font-weight: 600;
+  text-decoration: none;
+  transition: all 0.3s ease;
+  border: none;
+  cursor: pointer;
+  font-size: 1rem;
+  flex: 1;
+  max-width: 200px;
+}
+
+/* Uploaded Video */
+.uploaded-video-area {
+  margin-top: 1.5rem;
+}
+
+.video-player-container {
+  margin-bottom: 1.5rem;
+}
+
+.video-player {
+  width: 100%;
+  height: 300px;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.video-link-section {
+  background: #f8f9fa;
+  padding: 1.5rem;
+  border-radius: 12px;
+  border: 1px solid #e2e8f0;
+}
+
+.link-label {
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: #4a5568;
+  margin: 0 0 0.75rem 0;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.link-controls {
+  display: flex;
+  gap: 0.75rem;
+  align-items: center;
+}
+
+.link-input {
+  flex: 1;
+  border: 2px solid #e2e8f0;
+  border-radius: 8px;
+  padding: 0.75rem;
+  font-size: 0.9rem;
+  background: white;
+  color: #4a5568;
+}
+
+.link-input:focus {
+  outline: none;
+  border-color: #667eea;
+  box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+}
+
+.link-btn {
+  display: inline-flex;
+  align-items: center;
+  padding: 0.75rem 1rem;
+  border-radius: 8px;
+  font-weight: 600;
+  text-decoration: none;
+  transition: all 0.3s ease;
+  border: none;
+  cursor: pointer;
+  font-size: 0.9rem;
+  white-space: nowrap;
+}
+
+/* No Video State */
+.no-video-state {
+  text-align: center;
+  padding: 3rem 2rem;
+  background: #f8f9fa;
+  border-radius: 12px;
+  border: 2px dashed #cbd5e0;
+}
+
+.no-video-icon {
+  font-size: 3rem;
+  color: #cbd5e0;
+  margin-bottom: 1rem;
+}
+
+.no-video-title {
+  font-size: 1.25rem;
+  font-weight: 600;
+  color: #4a5568;
+  margin-bottom: 0.5rem;
+}
+
+.no-video-description {
+  color: #718096;
+  margin: 0;
+}
+
+/* Buttons */
+.btn-secondary, .btn-primary, .btn-danger {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.75rem 1.5rem;
+  border-radius: 12px;
+  font-weight: 600;
+  text-decoration: none;
+  transition: all 0.3s ease;
+  border: none;
+  cursor: pointer;
+  font-size: 0.95rem;
+}
+
+.btn-secondary {
+  background: #e2e8f0;
+  color: #4a5568;
+}
+
+.btn-secondary:hover {
+  background: #cbd5e0;
+  transform: translateY(-2px);
+  color: #2d3748;
+}
+
+.btn-primary {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+  box-shadow: 0 4px 15px rgba(102, 126, 234, 0.4);
+}
+
+.btn-primary:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(102, 126, 234, 0.5);
+}
+
+.btn-danger {
+  background: linear-gradient(135deg, #e53e3e 0%, #c53030 100%);
+  color: white;
+  box-shadow: 0 4px 15px rgba(229, 62, 62, 0.4);
+}
+
+.btn-danger:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(229, 62, 62, 0.5);
+}
+
+.btn-danger:disabled,
+.btn-primary:disabled,
+.btn-secondary:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+  transform: none !important;
+}
+
+/* Action Buttons */
+.action-buttons {
+  padding: 2rem;
+  background: #f8f9fa;
+  text-align: center;
+}
+
+.button-group {
+  display: flex;
+  gap: 1.5rem;
+  justify-content: center;
+  margin-bottom: 2rem;
+  flex-wrap: wrap;
+}
+
+.progress-bar-wrapper {
+  max-width: 500px;
+  margin: 2rem auto 1rem auto;
+  padding: 0 1rem;
+}
+
+.progress-bar {
+  position: relative;
+  height: 4px;
+  background: #e2e8f0;
+  border-radius: 2px;
+  margin-bottom: 2rem;
+}
+
+.progress-fill {
+  height: 100%;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  border-radius: 2px;
+  transition: width 0.3s ease;
+}
+
+.progress-steps {
+  display: flex;
+  justify-content: space-between;
+  position: relative;
+}
+
+.progress-step {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  color: #718096;
+  transition: color 0.3s ease;
+}
+
+.progress-step.completed {
+  color: #667eea;
+}
+
+.step-circle {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background: #e2e8f0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 0.5rem;
+  transition: all 0.3s ease;
+  font-size: 0.9rem;
+  color: #718096;
+}
+
+.progress-step.completed .step-circle {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+  transform: scale(1.1);
+}
+
+.step-label {
+  font-size: 0.875rem;
+  font-weight: 500;
+  text-align: center;
+}
+
+/* Tips Banner */
+.tips-banner {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  border-radius: 16px;
+  padding: 1rem;
+  color: white;
+  margin: 1rem 0;
+  box-shadow: 0 8px 20px rgba(102, 126, 234, 0.25);
+}
+
+.tips-banner-header {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 1rem;
+}
+
+.tips-banner-header i {
+  font-size: 1.25rem;
+  margin-right: 0.5rem;
+  color: #ffd700;
+}
+
+.tips-banner-header h3 {
+  margin: 0;
+  font-size: 1.125rem;
+  font-weight: 600;
+}
+
+.tips-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  font-size: 0.9rem;
+  line-height: 1.5;
+  columns: 2;
+  column-gap: 2rem;
+}
+
+.tips-list li {
+  margin-bottom: 0.5rem;
+  break-inside: avoid;
+  padding-left: 1.5rem;
+  position: relative;
+}
+
+.tips-list li::before {
+  content: "•";
+  color: #ffd700;
+  font-weight: bold;
+  position: absolute;
+  left: 0;
+  top: 0;
+}
+
+.security-note {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #718096;
+  font-size: 0.875rem;
+  margin-top: 1rem;
+}
+
+.security-note i {
+  margin-right: 0.5rem;
+  color: #48bb78;
+}
+
+/* Mobile Responsiveness */
+@media (max-width: 768px) {
+  .page-header {
+    padding: 0.5rem 0 0;
+  }
+
+  .main-title {
+    font-size: 1.75rem;
+  }
+
+  .main-content {
+    padding: 0.75rem 0;
+  }
+
+  .form-section {
+    padding: 1.5rem;
+  }
+
+  .section-header {
+    flex-direction: column;
+    text-align: center;
+  }
+
+  .section-icon {
+    margin: 0 auto 1rem auto;
+  }
+
+  .video-preview {
+    height: 300px;
+  }
+
+  .teleprompter-overlay {
+    width: 80%;
+    font-size: 1rem;
+    padding: 0.75rem;
+  }
+
+  .recording-controls {
+    flex-direction: column;
+  }
+
+  .recording-btn {
+    max-width: none;
+  }
+
+  .link-controls {
+    flex-direction: column;
+  }
+
+  .link-input {
+    margin-bottom: 0.5rem;
+  }
+
+  .button-group {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .btn-secondary, .btn-primary, .btn-danger {
+    width: 100%;
+    max-width: 300px;
+  }
+
+  .tips-list {
+    columns: 1;
+  }
+
+  .step-circle {
+    width: 35px;
+    height: 35px;
+    font-size: 0.8rem;
+  }
+
+  .step-label {
+    font-size: 0.8rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .page-header {
+    padding: 0.25rem 0 0;
+  }
+
+  .main-title {
+    font-size: 1.5rem;
+    margin-bottom: 0.1rem;
+  }
+
+  .main-subtitle {
+    font-size: 0.875rem;
+  }
+
+  .video-preview {
+    height: 250px;
+  }
+
+  .teleprompter-overlay {
+    width: 90%;
+    font-size: 0.9rem;
+    padding: 0.5rem;
+  }
+
+  .tips-banner {
+    padding: 1rem;
+    margin: 1rem 0;
+  }
+
+  .tips-list {
+    columns: 1;
+    font-size: 0.85rem;
+  }
+
+  .form-section {
+    padding: 1.25rem;
+  }
+}
 </style>

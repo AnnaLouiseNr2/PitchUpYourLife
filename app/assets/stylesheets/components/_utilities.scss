@@ -1,0 +1,131 @@
+// Bootstrap-based utility classes for CareerCompanion
+
+// === GRADIENTS (minimal custom additions to Bootstrap) ===
+.bg-gradient-primary {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%) !important;
+}
+
+.bg-gradient-success {
+  background: linear-gradient(135deg, #1EDD88 0%, #17c474 100%) !important;
+}
+
+.bg-gradient-light {
+  background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%) !important;
+}
+
+// === ENHANCED BOOTSTRAP BUTTONS ===
+.btn-gradient {
+  border: none;
+  font-weight: 600;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.btn-gradient:hover {
+  transform: translateY(-2px);
+}
+
+.btn-gradient-primary {
+  @extend .btn-gradient;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+}
+
+.btn-gradient-primary:hover {
+  box-shadow: 0 8px 25px rgba(102, 126, 234, 0.4);
+  color: white;
+}
+
+.btn-gradient-success {
+  @extend .btn-gradient;
+  background: linear-gradient(135deg, #1EDD88 0%, #17c474 100%);
+  color: white;
+}
+
+.btn-gradient-success:hover {
+  box-shadow: 0 8px 25px rgba(30, 221, 136, 0.4);
+  color: white;
+}
+
+// === ENHANCED BOOTSTRAP CARDS ===
+.card-hover {
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.card-hover:hover {
+  transform: translateY(-8px);
+  box-shadow: 0 15px 35px rgba(0, 0, 0, 0.1) !important;
+}
+
+// === ICON ENHANCEMENTS ===
+.icon-box-lg {
+  width: 80px;
+  height: 80px;
+  font-size: 2rem;
+}
+
+.icon-box-primary {
+  background-color: rgba(102, 126, 234, 0.1);
+  border: 2px solid rgba(102, 126, 234, 0.2);
+  color: #667eea;
+}
+
+.icon-box-success {
+  background-color: rgba(30, 221, 136, 0.1);
+  border: 2px solid rgba(30, 221, 136, 0.2);
+  color: #1EDD88;
+}
+
+// === TEXT UTILITIES ===
+.text-gradient-primary {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+// === SPACING UTILITIES (extend Bootstrap) ===
+.py-7 {
+  padding-top: 5rem !important;
+  padding-bottom: 5rem !important;
+}
+
+.py-8 {
+  padding-top: 6rem !important;
+  padding-bottom: 6rem !important;
+}
+
+.py-9 {
+  padding-top: 8rem !important;
+  padding-bottom: 8rem !important;
+}
+
+// === BORDER RADIUS UTILITIES ===
+.rounded-4 {
+  border-radius: 1.5rem !important;
+}
+
+.rounded-5 {
+  border-radius: 2rem !important;
+}
+
+// === ANIMATIONS ===
+@keyframes float {
+  0%, 100% {
+    transform: translateY(0px) rotate(var(--rotation, 0deg));
+  }
+  50% {
+    transform: translateY(-10px) rotate(var(--rotation, 0deg));
+  }
+}
+
+.float-animation {
+  animation: float 3s ease-in-out infinite;
+}
+
+// === RESPONSIVE UTILITIES ===
+@media (max-width: 768px) {
+  .py-7, .py-8, .py-9 {
+    padding-top: 3rem !important;
+    padding-bottom: 3rem !important;
+  }
+}

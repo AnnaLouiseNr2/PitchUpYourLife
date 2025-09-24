@@ -1,0 +1,853 @@
+<!-- Page Header -->
+<div class="page-header">
+  <div class="container">
+    <div class="row">
+      <div class="col-12">
+        <h1 class="main-title">Personalize Your Application</h1>
+        <h2 class="main-subtitle">
+          Select options most suitable for the application to get fully personalized cover letter and video pitch
+        </h2>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Main Content -->
+<div class="main-content">
+  <div class="container">
+    <div class="row justify-content-center">
+      <div class="col-12" style="max-width: 1400px; margin: 0 auto;">
+        <div class="form-wrapper">
+          <%= form_with url: prompt_selection_application_path(@application),
+                      method: :patch,
+                      local: true,
+                      html: { id: "traitForm", class: "personalization-form", data: { controller: "form-generator", action: "submit->form-generator#validateForm" } } do |f| %>
+
+            <!-- Tone Selection -->
+            <div class="form-section">
+              <div class="section-header">
+                <div class="section-icon">
+                  <i class="bi bi-palette"></i>
+                </div>
+                <div class="section-content">
+                  <h3 class="section-title">Communication Tone</h3>
+                  <p class="section-description">What tone do you want for your Cover Letter and Video Pitch?</p>
+                </div>
+              </div>
+              <div class="selection-cards">
+                <input type="hidden" name="trait_choice1" id="trait_choice1" required data-action="change->form-generator#updateButton" data-form-generator-target="input">
+
+                <div class="card-option" data-value="Professional and formal">
+                  <h4 class="card-title">Professional and formal</h4>
+                  <p class="card-description">Structured, business-focused communication</p>
+                  <div class="card-check"><i class="bi bi-check-circle-fill"></i></div>
+                </div>
+
+                <div class="card-option" data-value="Friendly and approachable">
+                  <h4 class="card-title">Friendly and approachable</h4>
+                  <p class="card-description">Warm, personable, and conversational</p>
+                  <div class="card-check"><i class="bi bi-check-circle-fill"></i></div>
+                </div>
+
+                <div class="card-option" data-value="Confident and assertive">
+                  <h4 class="card-title">Confident and assertive</h4>
+                  <p class="card-description">Bold, decisive, and results-driven</p>
+                  <div class="card-check"><i class="bi bi-check-circle-fill"></i></div>
+                </div>
+
+                <div class="card-option" data-value="Enthusiastic and energetic">
+                  <h4 class="card-title">Enthusiastic and energetic</h4>
+                  <p class="card-description">Passionate, dynamic, and inspiring</p>
+                  <div class="card-check"><i class="bi bi-check-circle-fill"></i></div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Professional Strength -->
+            <div class="form-section" data-controller="other-field" data-other-field-target="selectContainer">
+              <div class="section-header">
+                <div class="section-icon">
+                  <i class="bi bi-award"></i>
+                </div>
+                <div class="section-content">
+                  <h3 class="section-title">Professional Strength</h3>
+                  <p class="section-description">Which primary professional strength do you want to highlight?</p>
+                </div>
+              </div>
+              <div class="selection-cards">
+                <input type="hidden" name="trait_choice2" id="trait_choice2" required data-action="change->form-generator#updateButton" data-form-generator-target="input">
+
+                <div class="card-option" data-value="Technical expertise and problem-solving">
+                  <h4 class="card-title">Technical expertise and problem-solving</h4>
+                  <p class="card-description">Deep knowledge with analytical thinking</p>
+                  <div class="card-check"><i class="bi bi-check-circle-fill"></i></div>
+                </div>
+
+                <div class="card-option" data-value="Leadership and team management">
+                  <h4 class="card-title">Leadership and team management</h4>
+                  <p class="card-description">Guiding teams and driving results</p>
+                  <div class="card-check"><i class="bi bi-check-circle-fill"></i></div>
+                </div>
+
+                <div class="card-option" data-value="Communication and collaboration">
+                  <h4 class="card-title">Communication and collaboration</h4>
+                  <p class="card-description">Building relationships and partnerships</p>
+                  <div class="card-check"><i class="bi bi-check-circle-fill"></i></div>
+                </div>
+
+                <div class="card-option" data-value="Innovation and creative thinking">
+                  <h4 class="card-title">Innovation and creative thinking</h4>
+                  <p class="card-description">Developing new ideas and solutions</p>
+                  <div class="card-check"><i class="bi bi-check-circle-fill"></i></div>
+                </div>
+
+                <div class="card-option" data-value="Analytical and data-driven approach">
+                  <h4 class="card-title">Analytical and data-driven approach</h4>
+                  <p class="card-description">Making decisions based on insights</p>
+                  <div class="card-check"><i class="bi bi-check-circle-fill"></i></div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Experience Level -->
+            <div class="form-section">
+              <div class="section-header">
+                <div class="section-icon">
+                  <i class="bi bi-graph-up"></i>
+                </div>
+                <div class="section-content">
+                  <h3 class="section-title">Experience Level</h3>
+                  <p class="section-description">How would you describe your experience level in this field?</p>
+                </div>
+              </div>
+              <div class="selection-cards">
+                <input type="hidden" name="trait_choice3" id="trait_choice3" required data-action="change->form-generator#updateButton" data-form-generator-target="input">
+
+                <div class="card-option" data-value="Entry level (0–2 years)">
+                  <h4 class="card-title">Entry level (0–2 years)</h4>
+                  <p class="card-description">Starting your career journey</p>
+                  <div class="card-check"><i class="bi bi-check-circle-fill"></i></div>
+                </div>
+
+                <div class="card-option" data-value="Mid-level (3–5 years)">
+                  <h4 class="card-title">Mid-level (3–5 years)</h4>
+                  <p class="card-description">Growing expertise and responsibility</p>
+                  <div class="card-check"><i class="bi bi-check-circle-fill"></i></div>
+                </div>
+
+                <div class="card-option" data-value="Senior level (6–10 years)">
+                  <h4 class="card-title">Senior level (6–10 years)</h4>
+                  <p class="card-description">Seasoned professional with deep skills</p>
+                  <div class="card-check"><i class="bi bi-check-circle-fill"></i></div>
+                </div>
+
+                <div class="card-option" data-value="Expert level (10+ years)">
+                  <h4 class="card-title">Expert level (10+ years)</h4>
+                  <p class="card-description">Industry leader and subject matter expert</p>
+                  <div class="card-check"><i class="bi bi-check-circle-fill"></i></div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Career Motivation -->
+            <div class="form-section" data-controller="other-field" data-other-field-target="selectContainer">
+              <div class="section-header">
+                <div class="section-icon">
+                  <i class="bi bi-heart"></i>
+                </div>
+                <div class="section-content">
+                  <h3 class="section-title">Career Motivation</h3>
+                  <p class="section-description">What motivates you most in your career?</p>
+                </div>
+              </div>
+              <div class="selection-cards">
+                <input type="hidden" name="trait_choice4" id="trait_choice4" required data-action="change->form-generator#updateButton" data-form-generator-target="input">
+
+                <div class="card-option" data-value="Professional growth and learning">
+                  <h4 class="card-title">Professional growth and learning</h4>
+                  <p class="card-description">Continuously developing skills and knowledge</p>
+                  <div class="card-check"><i class="bi bi-check-circle-fill"></i></div>
+                </div>
+
+                <div class="card-option" data-value="Making a meaningful impact">
+                  <h4 class="card-title">Making a meaningful impact</h4>
+                  <p class="card-description">Creating positive change and value</p>
+                  <div class="card-check"><i class="bi bi-check-circle-fill"></i></div>
+                </div>
+
+                <div class="card-option" data-value="Solving complex challenges">
+                  <h4 class="card-title">Solving complex challenges</h4>
+                  <p class="card-description">Tackling difficult problems and finding solutions</p>
+                  <div class="card-check"><i class="bi bi-check-circle-fill"></i></div>
+                </div>
+
+                <div class="card-option" data-value="Working with great teams">
+                  <h4 class="card-title">Working with great teams</h4>
+                  <p class="card-description">Collaborating with talented people</p>
+                  <div class="card-check"><i class="bi bi-check-circle-fill"></i></div>
+                </div>
+
+                <div class="card-option" data-value="Building innovative solutions">
+                  <h4 class="card-title">Building innovative solutions</h4>
+                  <p class="card-description">Creating new products and approaches</p>
+                  <div class="card-check"><i class="bi bi-check-circle-fill"></i></div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Action Buttons -->
+            <div class="action-buttons">
+              <div class="button-group">
+                <%= link_to new_application_path, class: "btn-secondary" do %>
+                  <i class="bi bi-arrow-left me-2"></i>
+                  <span class="d-none d-sm-inline">Back</span>
+                  <span class="d-sm-none">Back</span>
+                <% end %>
+                <%= submit_tag "Generate Cover Letter & Video Pitch",
+                    id: "nextBtn",
+                    class: "btn-primary disabled",
+                    form: "traitForm",
+                    data: { "form-generator-target" => "submitButton", "desktop-text" => "Generate Cover Letter & Video Pitch", "mobile-text" => "Generate" } %>
+              </div>
+
+          <% end %>
+
+              <!-- Progress Bar -->
+              <div class="progress-bar-wrapper">
+                <div class="progress-bar">
+                  <div class="progress-fill" style="width: 50%;"></div>
+                </div>
+                <div class="progress-steps">
+                  <div class="progress-step completed">
+                    <div class="step-circle">
+                      <i class="bi bi-check"></i>
+                    </div>
+                    <span class="step-label">Upload Files</span>
+                  </div>
+                  <div class="progress-step active">
+                    <div class="step-circle">
+                      <span>2</span>
+                    </div>
+                    <span class="step-label">Personalize</span>
+                  </div>
+                  <div class="progress-step">
+                    <div class="step-circle">
+                      <span>3</span>
+                    </div>
+                    <span class="step-label">Generate</span>
+                  </div>
+                  <div class="progress-step">
+                    <div class="step-circle">
+                      <span>4</span>
+                    </div>
+                    <span class="step-label">Record</span>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Tips Banner -->
+              <div class="tips-banner">
+                <div class="tips-banner-header">
+                  <i class="bi bi-lightbulb-fill"></i>
+                  <h3>Tips for best results</h3>
+                </div>
+                <ul class="tips-list">
+                  <li>Choose options that best reflect your professional style</li>
+                  <li>Select experience level that matches the job requirements</li>
+                  <li>Pick motivations that align with the company culture</li>
+                </ul>
+              </div>
+
+              <div class="security-note">
+                <i class="bi bi-shield-check"></i>
+                <small>Your preferences are used only to personalize your application materials</small>
+              </div>
+            </div>
+
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<style>
+/* Page Header */
+.page-header {
+  background: #f8f9fa;
+  padding: 0.75rem 0 0;
+  text-align: center;
+}
+
+.main-title {
+  font-size: 2rem;
+  font-weight: 700;
+  color: #2d3748;
+  margin-bottom: 0.125rem;
+  text-align: center;
+}
+
+.main-subtitle {
+  font-size: 0.95rem;
+  color: #718096;
+  max-width: 500px;
+  margin: 0 auto 0 auto;
+  line-height: 1.4;
+  text-align: center;
+}
+
+.progress-bar-wrapper {
+  max-width: 500px;
+  margin: 2rem auto 1rem auto;
+  padding: 0 1rem;
+}
+
+.progress-bar {
+  position: relative;
+  height: 4px;
+  background: #e2e8f0;
+  border-radius: 2px;
+  margin-bottom: 2rem;
+}
+
+.progress-fill {
+  height: 100%;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  border-radius: 2px;
+  transition: width 0.3s ease;
+}
+
+.progress-steps {
+  display: flex;
+  justify-content: space-between;
+  position: relative;
+}
+
+.progress-step {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  color: #718096;
+  transition: color 0.3s ease;
+}
+
+.progress-step.active {
+  color: #667eea;
+}
+
+.progress-step.completed {
+  color: #667eea;
+}
+
+.step-circle {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background: #e2e8f0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 0.5rem;
+  transition: all 0.3s ease;
+  font-size: 0.9rem;
+  color: #718096;
+}
+
+.progress-step.active .step-circle,
+.progress-step.completed .step-circle {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+  transform: scale(1.1);
+}
+
+.step-label {
+  font-size: 0.875rem;
+  font-weight: 500;
+  text-align: center;
+}
+
+.main-content {
+  padding: 1rem 0;
+  background: #f8f9fa;
+}
+
+/* Tips Banner */
+.tips-banner {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  border-radius: 16px;
+  padding: 1rem;
+  color: white;
+  margin: 1rem 0;
+  box-shadow: 0 8px 20px rgba(102, 126, 234, 0.25);
+}
+
+.tips-banner-header {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 1rem;
+}
+
+.tips-banner-header i {
+  font-size: 1.25rem;
+  margin-right: 0.5rem;
+  color: #ffd700;
+}
+
+.tips-banner-header h3 {
+  margin: 0;
+  font-size: 1.125rem;
+  font-weight: 600;
+}
+
+.tips-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  font-size: 0.9rem;
+  line-height: 1.5;
+  columns: 3;
+  column-gap: 2rem;
+}
+
+.tips-list li {
+  margin-bottom: 0.5rem;
+  break-inside: avoid;
+  padding-left: 1.5rem;
+  position: relative;
+}
+
+.tips-list li::before {
+  content: "•";
+  color: #ffd700;
+  font-weight: bold;
+  position: absolute;
+  left: 0;
+  top: 0;
+}
+
+.form-wrapper {
+  background: white;
+  border-radius: 20px;
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+  overflow: hidden;
+}
+
+.form-section {
+  padding: 2rem;
+  border-bottom: 1px solid #e2e8f0;
+}
+
+.form-section:last-of-type {
+  border-bottom: none;
+}
+
+.section-header {
+  display: flex;
+  align-items: flex-start;
+  margin-bottom: 1.5rem;
+}
+
+.section-icon {
+  width: 48px;
+  height: 48px;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-right: 1rem;
+  flex-shrink: 0;
+}
+
+.section-icon i {
+  font-size: 1.25rem;
+  color: white;
+}
+
+.section-content {
+  flex: 1;
+}
+
+.section-title {
+  font-size: 1.25rem;
+  font-weight: 600;
+  color: #2d3748;
+  margin: 0 0 0.25rem 0;
+}
+
+.section-description {
+  color: #718096;
+  margin: 0;
+  font-size: 0.95rem;
+}
+
+.form-field-input {
+  margin-top: 1rem;
+}
+
+/* Selection Cards */
+.selection-cards {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+  gap: 1.5rem;
+  margin-top: 1.5rem;
+}
+
+.card-option {
+  background: white;
+  border: 2px solid #e2e8f0;
+  border-radius: 8px;
+  padding: 1rem;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  position: relative;
+  text-align: left;
+  min-height: 70px;
+  user-select: none;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+}
+
+.card-option:hover {
+  border-color: #667eea;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(102, 126, 234, 0.15);
+}
+
+.card-option.selected {
+  border-color: #667eea;
+  background: linear-gradient(135deg, rgba(102, 126, 234, 0.05) 0%, rgba(118, 75, 162, 0.05) 100%);
+  box-shadow: 0 4px 12px rgba(102, 126, 234, 0.2);
+}
+
+.card-title {
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: #2d3748;
+  margin: 0 0 0.5rem 0;
+  line-height: 1.3;
+  pointer-events: none;
+}
+
+.card-description {
+  font-size: 0.85rem;
+  color: #718096;
+  margin: 0;
+  line-height: 1.4;
+  pointer-events: none;
+}
+
+.card-check {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.card-option.selected .card-check {
+  opacity: 1;
+}
+
+.card-check i {
+  font-size: 1.125rem;
+  color: #48bb78;
+}
+
+.other-input {
+  width: 100%;
+  border: 1px solid #e2e8f0;
+  border-radius: 6px;
+  padding: 0.5rem;
+  margin-top: 0.5rem;
+  font-size: 0.875rem;
+}
+
+.other-input:focus {
+  outline: none;
+  border-color: #667eea;
+}
+
+/* Form Inputs */
+.custom-select,
+.custom-input {
+  width: 100%;
+  border: 2px solid #e2e8f0;
+  border-radius: 12px;
+  padding: 0.75rem 1rem;
+  font-size: 0.95rem;
+  transition: border-color 0.3s ease, box-shadow 0.3s ease;
+  background: #fafbfc;
+}
+
+.custom-select:focus,
+.custom-input:focus {
+  outline: none;
+  border-color: #667eea;
+  box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+  background: white;
+}
+
+.action-buttons {
+  padding: 2rem;
+  background: #f8f9fa;
+  text-align: center;
+}
+
+.button-group {
+  display: flex;
+  gap: 1.5rem;
+  justify-content: center;
+  margin-bottom: 2rem;
+  flex-wrap: wrap;
+}
+
+.btn-secondary, .btn-primary {
+  display: inline-flex;
+  align-items: center;
+  padding: 0.75rem 2rem;
+  border-radius: 12px;
+  font-weight: 600;
+  text-decoration: none;
+  transition: all 0.3s ease;
+  border: none;
+  cursor: pointer;
+  font-size: 0.95rem;
+}
+
+.btn-secondary {
+  background: #e2e8f0;
+  color: #4a5568;
+}
+
+.btn-secondary:hover {
+  background: #cbd5e0;
+  transform: translateY(-2px);
+  color: #2d3748;
+}
+
+.btn-primary {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+  box-shadow: 0 4px 15px rgba(102, 126, 234, 0.4);
+}
+
+.btn-primary:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(102, 126, 234, 0.5);
+}
+
+.btn-primary::after {
+  content: " ";
+  background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="white" class="bi bi-arrow-right" viewBox="0 0 16 16"><path fill-rule="evenodd" d="M1 8a.5.5 0 0 1 .5-.5h11.793l-3.147-3.146a.5.5 0 0 1 .708-.708l4 4a.5.5 0 0 1 0 .708l-4 4a.5.5 0 0 1-.708-.708L13.293 8.5H1.5A.5.5 0 0 1 1 8z"/></svg>') no-repeat center;
+  width: 16px;
+  height: 16px;
+  display: inline-block;
+  margin-left: 0.5rem;
+}
+
+.btn-primary.disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+  transform: none !important;
+  box-shadow: 0 4px 15px rgba(102, 126, 234, 0.2) !important;
+}
+
+.btn-primary:not(.disabled) {
+  opacity: 1;
+  cursor: pointer;
+}
+
+.button-content {
+  display: flex;
+  align-items: center;
+}
+
+.button-spinner {
+  display: none;
+}
+
+.security-note {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #718096;
+  font-size: 0.875rem;
+  margin-top: 1rem;
+}
+
+.security-note i {
+  margin-right: 0.5rem;
+  color: #48bb78;
+}
+
+@media (max-width: 992px) {
+  .tips-list {
+    columns: 2;
+    column-gap: 1.5rem;
+  }
+}
+
+@media (max-width: 768px) {
+  .page-header {
+    padding: 0.5rem 0 0;
+  }
+
+  .main-title {
+    font-size: 1.75rem;
+  }
+
+  .main-content {
+    padding: 0.75rem 0;
+  }
+
+  .tips-list {
+    columns: 1;
+  }
+
+  .form-section {
+    padding: 1.5rem;
+  }
+
+  .selection-cards {
+    grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+    gap: 0.75rem;
+  }
+
+  .card-option {
+    padding: 0.75rem;
+    min-height: 60px;
+  }
+
+  .section-header {
+    flex-direction: column;
+    text-align: center;
+  }
+
+  .section-icon {
+    margin: 0 auto 1rem auto;
+  }
+
+  .button-group {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .btn-secondary, .btn-primary {
+    width: 100%;
+    max-width: 300px;
+    justify-content: center;
+  }
+
+  .btn-primary[data-mobile-text]::before {
+    content: attr(data-mobile-text);
+  }
+
+  .btn-primary[data-mobile-text] {
+    font-size: 0;
+  }
+
+  .btn-primary[data-mobile-text]::after {
+    margin-left: 0.5rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .page-header {
+    padding: 0.25rem 0 0;
+  }
+
+  .main-title {
+    font-size: 1.5rem;
+    margin-bottom: 0.1rem;
+  }
+
+  .main-subtitle {
+    font-size: 0.875rem;
+  }
+
+  .step-circle {
+    width: 35px;
+    height: 35px;
+    font-size: 0.8rem;
+  }
+
+  .step-label {
+    font-size: 0.8rem;
+  }
+
+  .tips-banner {
+    padding: 1rem;
+    margin: 1rem 0;
+  }
+
+  .tips-list {
+    columns: 1;
+    font-size: 0.85rem;
+  }
+
+  .form-section {
+    padding: 1rem;
+  }
+
+  .selection-cards {
+    grid-template-columns: 1fr;
+    gap: 0.5rem;
+  }
+
+  .card-option {
+    padding: 0.875rem;
+    min-height: 60px;
+  }
+
+  .card-title {
+    font-size: 0.8rem;
+  }
+
+  .card-description {
+    font-size: 0.7rem;
+  }
+}
+</style>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+  // Add a small delay to ensure Stimulus controllers are connected
+  setTimeout(() => {
+    document.querySelectorAll('.card-option').forEach(card => {
+      card.addEventListener('click', function() {
+        console.log('Card clicked:', this.dataset.value);
+
+        const container = this.closest('.selection-cards');
+        const hiddenInput = container.querySelector('input[type="hidden"]');
+
+        // Remove selected from siblings
+        container.querySelectorAll('.card-option').forEach(c => c.classList.remove('selected'));
+
+        // Add selected to this card
+        this.classList.add('selected');
+
+        // Update hidden input
+        if (hiddenInput) {
+          hiddenInput.value = this.dataset.value;
+          console.log('Updated hidden input:', hiddenInput.name, 'to:', hiddenInput.value);
+
+          // Dispatch both change and input events to ensure Stimulus picks it up
+          hiddenInput.dispatchEvent(new Event('change', { bubbles: true }));
+          hiddenInput.dispatchEvent(new Event('input', { bubbles: true }));
+
+          // Force Stimulus controller update if it exists
+          const form = hiddenInput.closest('form');
+          if (form && form.formGeneratorController) {
+            setTimeout(() => {
+              form.formGeneratorController.updateButton();
+            }, 10);
+          }
+        }
+      });
+    });
+  }, 100);
+});
+</script>
+

@@ -1,141 +1,684 @@
+<!-- Page Header -->
 <div class="page-header">
-  <h1 class="page-title">Review your Cover Letter and Video Pitch</h1>
-  <h2 class="page-subtitle">
-    Please review the draft cover letter and video pitch. Regenerate to get more options
-  </h2>
+  <div class="container">
+    <div class="row">
+      <div class="col-12">
+        <h1 class="main-title">Review Your Application</h1>
+        <h2 class="main-subtitle">
+          Review and finalize your AI-generated cover letter and video pitch
+        </h2>
+      </div>
+    </div>
+  </div>
 </div>
 
-<div class="container-fluid" data-controller="overview">
-  <div class="d-flex justify-content-center">
-    <div class="d-flex flex-column" style="max-width: 1400px; width: 100%;">
+<!-- Main Content -->
+<div class="main-content">
+  <div class="container">
+    <div class="row justify-content-center">
+      <div class="col-12" style="max-width: 1400px; margin: 0 auto;">
+        <div class="form-wrapper">
+          <!-- Your Selections Section -->
+          <div class="form-section">
+            <div class="section-header">
+              <div class="section-icon">
+                <i class="bi bi-person-check"></i>
+              </div>
+              <div class="section-content">
+                <h3 class="section-title">Your Selections</h3>
+                <p class="section-description">Personalization choices you made</p>
+              </div>
+            </div>
 
-      <div class="d-flex gap-4 justify-content-center align-items-start">
-        <div class="d-flex flex-column gap-4" style="flex: 0 0 20%; max-width: 20%; min-width: 200px;">
-          <div class="d-flex flex-column p-4 rounded-4 shadow bg-white border" style="height: 500px;">
-            <h2 class="h5 mb-4 text-center"><strong>Your Selections</strong></h2>
-            <div class="d-flex flex-column flex-grow-1">
-              <div class="flex-grow-1 p-2 overflow-auto">
-                <div class="mb-3">
-                  <h6 class="small text-muted mb-2">Tone</h6>
-                  <p class="small mb-0"><%= @trait.first || "Not selected" %></p>
-                </div>
-                <hr class="my-3" style="border-color: #e0e0e0;">
-                <div class="mb-3">
-                  <h6 class="small text-muted mb-2">Professional Strength</h6>
-                  <p class="small mb-0">
-                    <% if @trait.second == "Other" %>
-                      <%= @trait.second || "Not specified" %>
-                    <% else %>
-                      <%= @trait.second || "Not selected" %>
-                    <% end %>
-                  </p>
-                </div>
-                <hr class="my-3" style="border-color: #e0e0e0;">
-                <div class="mb-3">
-                  <h6 class="small text-muted mb-2">Experience Level</h6>
-                  <p class="small mb-0"><%= @trait.third || "Not selected" %></p>
-                </div>
-                <hr class="my-3" style="border-color: #e0e0e0;">
-                <div class="mb-3">
-                  <h6 class="small text-muted mb-2">Career Motivation</h6>
-                  <p class="small mb-0">
-                    <% if @trait.fourth == "Other" %>
-                      <%= @trait.fourth || "Not specified" %>
-                    <% else %>
-                      <%= @trait.fourth || "Not selected" %>
-                    <% end %>
-                  </p>
-                </div>
+            <div class="selections-grid">
+              <div class="selection-item">
+                <h6 class="selection-label">Communication Tone</h6>
+                <p class="selection-value"><%= @prompt_selection.tone_preference || "Not selected" %></p>
+              </div>
+
+              <div class="selection-item">
+                <h6 class="selection-label">Professional Strength</h6>
+                <p class="selection-value">
+                  <% if @prompt_selection.main_strength == "Other" %>
+                    <%= @prompt_selection.main_strength || "Not specified" %>
+                  <% else %>
+                    <%= @prompt_selection.main_strength || "Not selected" %>
+                  <% end %>
+                </p>
+              </div>
+
+              <div class="selection-item">
+                <h6 class="selection-label">Experience Level</h6>
+                <p class="selection-value"><%= @prompt_selection.experience_level || "Not selected" %></p>
+              </div>
+
+              <div class="selection-item">
+                <h6 class="selection-label">Career Motivation</h6>
+                <p class="selection-value">
+                  <% if @prompt_selection.career_motivation == "Other" %>
+                    <%= @prompt_selection.career_motivation || "Not specified" %>
+                  <% else %>
+                    <%= @prompt_selection.career_motivation || "Not selected" %>
+                  <% end %>
+                </p>
               </div>
             </div>
           </div>
-        </div>
 
-        <div class="d-flex flex-column p-4 rounded-4 shadow bg-white border" style="flex: 0 0 38.25%; max-width: 38.25%; height: 500px;">
-          <h2 class="h5 mb-4 text-center"><strong>Review your Cover Letter</strong></h2>
-          <div class="d-flex flex-column" style="flex: 1; min-height: 0;">
-            <div
-              id="cl_output"
-              class="p-2 overflow-auto flex-grow-1"
-              data-overview-target="coverLetterOutput"
-            >
-              <%= simple_format(@application.cl_message) %>
-            </div>
-            <div class="row g-2 mt-auto" style="flex-shrink: 0;">
-              <div class="col-6">
-                <%= button_to "Regenerate", generate_cl_application_path(@application, prompt_cl: @llm_prompt_cl),
-                  method: :post,
-                  class: "btn btn-outline-secondary w-100 m-1" %>
+          <!-- Cover Letter Section -->
+          <div class="form-section">
+            <div class="section-header">
+              <div class="section-icon">
+                <i class="bi bi-file-earmark-text"></i>
               </div>
-              <div class="col-6">
-                <%= form_with url: final_cl_application_path(@application), method: :post, data: { action: "submit->overview#finalizeCoverLetter" }, class: "w-100" do |form| %>
-                  <%= form.hidden_field :final_cl, data: { overview_target: "coverLetterInput" } %>
+              <div class="section-content">
+                <h3 class="section-title">Cover Letter</h3>
+                <p class="section-description">AI-generated personalized cover letter</p>
+              </div>
+            </div>
+
+            <div class="content-area">
+              <div class="content-preview">
+                <%= simple_format(@application.coverletter_message) %>
+              </div>
+
+              <div class="content-actions">
+                <%= button_to "Regenerate", generate_cl_application_path(@application, prompt_cl: @llm_prompt_cl),
+                    method: :post,
+                    class: "btn-secondary" %>
+
+                <%= form_with url: final_cl_application_path(@application), method: :post, local: true, class: "finalize-form" do |form| %>
+                  <%= form.hidden_field :final_cl, value: @application.coverletter_message %>
                   <%
-                    cl_finalized = @application.finals.last&.cl.present?
-                    cl_btn_class = cl_finalized ? "btn btn-success w-100 m-1" : "btn btn-primary w-100 m-1"
-                    cl_btn_text = cl_finalized ? "Finalized" : "Finalize"
+                    cl_finalized = @application.finals.last&.coverletter_content.present?
+                    cl_btn_class = cl_finalized ? "btn-success finalized" : "btn-primary"
+                    cl_btn_text = cl_finalized ? "✓ Finalized" : "Finalize"
                     cl_disabled = cl_finalized
                   %>
                   <%= form.submit cl_btn_text,
                       class: cl_btn_class,
-                      disabled: cl_disabled,
-                      data: {
-                        overview_target: "coverLetterFinalizeBtn",
-                        finalized: cl_finalized.to_s
-                      } %>
+                      disabled: cl_disabled %>
                 <% end %>
               </div>
             </div>
           </div>
-        </div>
 
-        <div class="d-flex flex-column p-4 rounded-4 shadow bg-white border" style="flex: 0 0 38.25%; max-width: 38.25%; height: 500px;">
-          <h2 class="h5 mb-4 text-center"><strong>Review your Video Pitch</strong></h2>
-          <div class="d-flex flex-column" style="flex: 1; min-height: 0;">
-            <div
-              id="video_output"
-              class="p-2 overflow-auto flex-grow-1"
-              data-overview-target="videoPitchOutput"
-            >
-              <%= simple_format(@application.video_message) %>
-            </div>
-            <div class="row g-2 mt-auto" style="flex-shrink: 0;">
-              <div class="col-6">
-                <%= button_to "Regenerate", generate_video_application_path(@application, prompt_video: @llm_prompt_video),
-                  method: :post,
-                  class: "btn btn-outline-secondary w-100 m-1" %>
+          <!-- Video Pitch Section -->
+          <div class="form-section">
+            <div class="section-header">
+              <div class="section-icon">
+                <i class="bi bi-camera-video"></i>
               </div>
-              <div class="col-6">
-                <%= form_with url: final_pitch_application_path(@application), method: :post, data: { action: "submit->overview#finalizeVideoPitch" }, class: "w-100" do |form| %>
-                  <%= form.hidden_field :final_pitch, data: { overview_target: "videoPitchInput" } %>
+              <div class="section-content">
+                <h3 class="section-title">Video Pitch Script</h3>
+                <p class="section-description">AI-generated video pitch script</p>
+              </div>
+            </div>
+
+            <div class="content-area">
+              <div class="content-preview">
+                <%= simple_format(@application.video_message) %>
+              </div>
+
+              <div class="content-actions">
+                <%= button_to "Regenerate", generate_video_application_path(@application, prompt_video: @llm_prompt_video),
+                    method: :post,
+                    class: "btn-secondary" %>
+
+                <%= form_with url: final_pitch_application_path(@application), method: :post, local: true, class: "finalize-form" do |form| %>
+                  <%= form.hidden_field :final_pitch, value: @application.video_message %>
                   <%
                     pitch_finalized = @application.finals.last&.pitch.present?
-                    pitch_btn_class = pitch_finalized ? "btn btn-success w-100 m-1" : "btn btn-primary w-100 m-1"
-                    pitch_btn_text = pitch_finalized ? "Finalized" : "Finalize"
+                    pitch_btn_class = pitch_finalized ? "btn-success finalized" : "btn-primary"
+                    pitch_btn_text = pitch_finalized ? "✓ Finalized" : "Finalize"
                     pitch_disabled = pitch_finalized
                   %>
                   <%= form.submit pitch_btn_text,
                       class: pitch_btn_class,
-                      disabled: pitch_disabled,
-                      data: {
-                        overview_target: "videoPitchFinalizeBtn",
-                        finalized: pitch_finalized.to_s
-                      } %>
+                      disabled: pitch_disabled %>
                 <% end %>
               </div>
+            </div>
+          </div>
+
+          <!-- Action Buttons -->
+          <div class="action-buttons">
+            <div class="button-group">
+              <%= link_to prompt_selection_application_path(@application), class: "btn-secondary" do %>
+                <i class="bi bi-arrow-left me-2"></i>
+                <span class="d-none d-sm-inline">Back to Personalization</span>
+                <span class="d-sm-none">Back</span>
+              <% end %>
+
+              <%
+                both_finalized = @application.finals.last&.coverletter_content.present? && @application.finals.last&.pitch.present?
+                next_btn_class = both_finalized ? "btn-primary" : "btn-primary disabled"
+              %>
+              <%= link_to video_page_application_path(@application), class: next_btn_class do %>
+                <span class="d-none d-sm-inline">Record Video Pitch</span>
+                <span class="d-sm-none">Record Video</span>
+                <i class="bi bi-camera-video ms-2"></i>
+              <% end %>
+            </div>
+
+            <!-- Progress Bar -->
+            <div class="progress-bar-wrapper">
+              <div class="progress-bar">
+                <div class="progress-fill" style="width: 75%;"></div>
+              </div>
+              <div class="progress-steps">
+                <div class="progress-step completed">
+                  <div class="step-circle">
+                    <i class="bi bi-check"></i>
+                  </div>
+                  <span class="step-label">Upload Files</span>
+                </div>
+                <div class="progress-step completed">
+                  <div class="step-circle">
+                    <i class="bi bi-check"></i>
+                  </div>
+                  <span class="step-label">Personalize</span>
+                </div>
+                <div class="progress-step active">
+                  <div class="step-circle">
+                    <span>3</span>
+                  </div>
+                  <span class="step-label">Generate</span>
+                </div>
+                <div class="progress-step">
+                  <div class="step-circle">
+                    <span>4</span>
+                  </div>
+                  <span class="step-label">Record</span>
+                </div>
+              </div>
+            </div>
+
+            <!-- Tips Banner -->
+            <div class="tips-banner">
+              <div class="tips-banner-header">
+                <i class="bi bi-lightbulb-fill"></i>
+                <h3>Review and finalize your documents</h3>
+              </div>
+              <ul class="tips-list">
+                <li>Review the generated content for accuracy and tone</li>
+                <li>Use "Regenerate" to create alternative versions</li>
+                <li>Finalize both documents before recording your video</li>
+              </ul>
+            </div>
+
+            <div class="security-note">
+              <i class="bi bi-shield-check"></i>
+              <small>Your finalized documents are saved securely and can be edited later</small>
             </div>
           </div>
         </div>
       </div>
     </div>
   </div>
-
-    <div class="d-flex justify-content-center align-items-center gap-3" style="padding-top: 3rem; padding-bottom: 3rem;">
-    <%= link_to "← Back", trait_application_path(@application), class: "next-button" %>
-    <%= link_to "Record Your Video →", video_page_application_path(@application),
-      class: "next-button disabled-state",
-      data: { overview_target: "finalButton", action: "click->overview#checkFinalized" } %>
-  </div>
 </div>
 
-            <div class="pb-3"></div>
+<style>
+/* Page Header */
+.page-header {
+  background: #f8f9fa;
+  padding: 0.75rem 0 0;
+  text-align: center;
+}
+
+.main-title {
+  font-size: 2rem;
+  font-weight: 700;
+  color: #2d3748;
+  margin-bottom: 0.125rem;
+  text-align: center;
+}
+
+.main-subtitle {
+  font-size: 0.95rem;
+  color: #718096;
+  max-width: 500px;
+  margin: 0 auto 0 auto;
+  line-height: 1.4;
+  text-align: center;
+}
+
+.main-content {
+  padding: 1rem 0;
+  background: #f8f9fa;
+}
+
+/* Single Box Layout */
+.form-wrapper {
+  background: white;
+  border-radius: 20px;
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+  overflow: hidden;
+}
+
+.form-section {
+  padding: 1.25rem;
+  border-bottom: 1px solid #e2e8f0;
+}
+
+.form-section:last-of-type {
+  border-bottom: none;
+}
+
+.section-header {
+  display: flex;
+  align-items: flex-start;
+  margin-bottom: 1rem;
+}
+
+.section-icon {
+  width: 48px;
+  height: 48px;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-right: 1rem;
+  flex-shrink: 0;
+}
+
+.section-icon i {
+  font-size: 1.25rem;
+  color: white;
+}
+
+.section-content {
+  flex: 1;
+}
+
+.section-title {
+  font-size: 1.25rem;
+  font-weight: 600;
+  color: #2d3748;
+  margin: 0 0 0.25rem 0;
+}
+
+.section-description {
+  color: #718096;
+  margin: 0;
+  font-size: 0.95rem;
+}
+
+/* Selections Grid */
+.selections-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 1rem;
+  margin-top: 1rem;
+}
+
+.selection-item {
+  padding: 1rem;
+  background: #f8f9fa;
+  border-radius: 12px;
+  border: 1px solid #e2e8f0;
+}
+
+.selection-label {
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: #4a5568;
+  margin: 0 0 0.5rem 0;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.selection-value {
+  font-size: 0.95rem;
+  color: #2d3748;
+  margin: 0;
+  line-height: 1.4;
+}
+
+/* Content Areas */
+.content-area {
+  margin-top: 1rem;
+}
+
+.content-preview {
+  background: #fafbfc;
+  border: 2px solid #e2e8f0;
+  border-radius: 12px;
+  padding: 1rem;
+  font-size: 0.95rem;
+  line-height: 1.6;
+  margin-bottom: 1rem;
+  max-height: 300px;
+  overflow-y: auto;
+}
+
+.content-actions {
+  display: flex;
+  gap: 0.75rem;
+}
+
+.finalize-form {
+  flex: 1;
+}
+
+/* Buttons */
+.btn-secondary, .btn-primary, .btn-success {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.75rem 1.5rem;
+  border-radius: 12px;
+  font-weight: 600;
+  text-decoration: none;
+  transition: all 0.3s ease;
+  border: none;
+  cursor: pointer;
+  font-size: 0.95rem;
+  flex: 1;
+}
+
+.btn-secondary {
+  background: #e2e8f0;
+  color: #4a5568;
+}
+
+.btn-secondary:hover {
+  background: #cbd5e0;
+  transform: translateY(-2px);
+  color: #2d3748;
+}
+
+.btn-primary {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+  box-shadow: 0 4px 15px rgba(102, 126, 234, 0.4);
+}
+
+.btn-primary:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(102, 126, 234, 0.5);
+}
+
+.btn-primary.disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+  transform: none !important;
+  box-shadow: 0 4px 15px rgba(102, 126, 234, 0.2) !important;
+}
+
+.btn-success {
+  background: linear-gradient(135deg, #48bb78 0%, #38a169 100%);
+  color: white;
+  box-shadow: 0 4px 15px rgba(72, 187, 120, 0.4);
+}
+
+.btn-success:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(72, 187, 120, 0.5);
+}
+
+.btn-success.finalized {
+  opacity: 0.9;
+  cursor: default;
+}
+
+.btn-success.finalized:hover {
+  transform: none;
+  box-shadow: 0 4px 15px rgba(72, 187, 120, 0.4);
+}
+
+/* Action Buttons Section */
+.action-buttons {
+  padding: 1.25rem;
+  background: #f8f9fa;
+  text-align: center;
+}
+
+.button-group {
+  display: flex;
+  gap: 1rem;
+  justify-content: center;
+  margin-bottom: 1rem;
+  flex-wrap: wrap;
+}
+
+.progress-bar-wrapper {
+  max-width: 500px;
+  margin: 2rem auto 1rem auto;
+  padding: 0 1rem;
+}
+
+.progress-bar {
+  position: relative;
+  height: 4px;
+  background: #e2e8f0;
+  border-radius: 2px;
+  margin-bottom: 2rem;
+}
+
+.progress-fill {
+  height: 100%;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  border-radius: 2px;
+  transition: width 0.3s ease;
+}
+
+.progress-steps {
+  display: flex;
+  justify-content: space-between;
+  position: relative;
+}
+
+.progress-step {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  color: #718096;
+  transition: color 0.3s ease;
+}
+
+.progress-step.completed {
+  color: #667eea;
+}
+
+.step-circle {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background: #e2e8f0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 0.5rem;
+  transition: all 0.3s ease;
+  font-size: 0.9rem;
+  color: #718096;
+}
+
+.progress-step.completed .step-circle {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+  transform: scale(1.1);
+}
+
+.step-label {
+  font-size: 0.875rem;
+  font-weight: 500;
+  text-align: center;
+}
+
+/* Tips Banner */
+.tips-banner {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  border-radius: 16px;
+  padding: 1rem;
+  color: white;
+  margin: 1rem 0;
+  box-shadow: 0 8px 20px rgba(102, 126, 234, 0.25);
+}
+
+.tips-banner-header {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 1rem;
+}
+
+.tips-banner-header i {
+  font-size: 1.25rem;
+  margin-right: 0.5rem;
+  color: #ffd700;
+}
+
+.tips-banner-header h3 {
+  margin: 0;
+  font-size: 1.125rem;
+  font-weight: 600;
+}
+
+.tips-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  font-size: 0.9rem;
+  line-height: 1.5;
+  columns: 3;
+  column-gap: 2rem;
+}
+
+.tips-list li {
+  margin-bottom: 0.5rem;
+  break-inside: avoid;
+  padding-left: 1.5rem;
+  position: relative;
+}
+
+.tips-list li::before {
+  content: "•";
+  color: #ffd700;
+  font-weight: bold;
+  position: absolute;
+  left: 0;
+  top: 0;
+}
+
+.security-note {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #718096;
+  font-size: 0.875rem;
+  margin-top: 1rem;
+}
+
+.security-note i {
+  margin-right: 0.5rem;
+  color: #48bb78;
+}
+
+/* Mobile Responsiveness */
+@media (max-width: 992px) {
+  .tips-list {
+    columns: 2;
+    column-gap: 1.5rem;
+  }
+
+  .selections-grid {
+    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+  }
+}
+
+@media (max-width: 768px) {
+  .page-header {
+    padding: 0.5rem 0 0;
+  }
+
+  .main-title {
+    font-size: 1.75rem;
+  }
+
+  .main-content {
+    padding: 0.75rem 0;
+  }
+
+  .form-section {
+    padding: 1rem;
+  }
+
+  .section-header {
+    flex-direction: column;
+    text-align: center;
+  }
+
+  .section-icon {
+    margin: 0 auto 1rem auto;
+  }
+
+  .selections-grid {
+    grid-template-columns: 1fr;
+    gap: 0.75rem;
+  }
+
+  .content-actions {
+    flex-direction: column;
+  }
+
+  .button-group {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .btn-secondary, .btn-primary, .btn-success {
+    width: 100%;
+    max-width: 300px;
+  }
+
+  .tips-list {
+    columns: 1;
+  }
+
+  .step-circle {
+    width: 35px;
+    height: 35px;
+    font-size: 0.8rem;
+  }
+
+  .step-label {
+    font-size: 0.8rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .page-header {
+    padding: 0.25rem 0 0;
+  }
+
+  .main-title {
+    font-size: 1.5rem;
+    margin-bottom: 0.1rem;
+  }
+
+  .main-subtitle {
+    font-size: 0.875rem;
+  }
+
+  .content-preview {
+    max-height: 200px;
+  }
+
+  .tips-banner {
+    padding: 1rem;
+    margin: 1rem 0;
+  }
+
+  .tips-list {
+    columns: 1;
+    font-size: 0.85rem;
+  }
+
+  .form-section {
+    padding: 1rem;
+  }
+}
+</style>

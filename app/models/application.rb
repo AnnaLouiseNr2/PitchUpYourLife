@@ -5,12 +5,29 @@ class Application < ApplicationRecord
 
   has_many :finals, dependent: :destroy
   has_many :videos, dependent: :destroy
-  has_many :traits, dependent: :destroy
+  has_many :prompt_selections, dependent: :destroy
 
   # File upload security validations
-  validates :cv, attached: true, content_type: {
-    in: %w[application/pdf],
-    message: 'must be a PDF file'
-  }, size: { less_than: 10.megabytes, message: 'must be less than 10MB' }
+  validates :cv, presence: true
+  validate :cv_content_type
+  validate :cv_file_size
+
+  private
+
+  def cv_content_type
+    return unless cv.attached?
+
+    unless cv.blob.content_type == 'application/pdf'
+      errors.add(:cv, 'must be a PDF file')
+    end
+  end
+
+  def cv_file_size
+    return unless cv.attached?
+
+    if cv.blob.byte_size > 10.megabytes
+      errors.add(:cv, 'must be less than 10MB')
+    end
+  end
 
 end

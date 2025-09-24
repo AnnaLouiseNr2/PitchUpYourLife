@@ -12,9 +12,9 @@ class ApplicationsController < ApplicationController
   def show
     @application = current_user.applications.find(params[:id])
     @final = @application.finals.last
-    @trait = @application.traits.last
+    @prompt_selection = @application.prompt_selections.last || @application.prompt_selections.create!
 
-    @final_cl = @final&.cl
+    @final_cl = @final&.coverletter_content
     @final_pitch = @final&.pitch
   end
 
@@ -24,10 +24,10 @@ class ApplicationsController < ApplicationController
 
     if @application.save
 
-      redirect_to trait_application_path(@application), notice: "Application created!", status: :see_other
+      redirect_to prompt_selection_application_path(@application), notice: "Application created!", status: :see_other
       @application.finals.create()
       @application.videos.create()
-      @application.traits.create()
+      @application.prompt_selections.create()
     else
       render :new, status: :unprocessable_entity
     end
@@ -44,21 +44,21 @@ class ApplicationsController < ApplicationController
   end
 
 
-  def trait
+  def prompt_selection
     @application = current_user.applications.find(params[:id])
-    @trait = @application.traits.last
+    @prompt_selection = @application.prompt_selections.last || @application.prompt_selections.create!
     return unless request.patch?
 
-    trait_params = {
-      first: params[:trait_choice1],
-      second: (params[:trait_choice2] == "Other" ? params[:trait_choice2_other] : params[:trait_choice2]),
-      third: params[:trait_choice3],
-      fourth: (params[:trait_choice4] == "Other" ? params[:trait_choice4_other] : params[:trait_choice4])
+    prompt_params = {
+      tone_preference: params[:trait_choice1],
+      main_strength: (params[:trait_choice2] == "Other" ? params[:trait_choice2_other] : params[:trait_choice2]),
+      experience_level: params[:trait_choice3],
+      career_motivation: (params[:trait_choice4] == "Other" ? params[:trait_choice4_other] : params[:trait_choice4])
     }
 
-    @trait.update!(trait_params)
+    @prompt_selection.update!(prompt_params)
 
-    # @traits = [session[:trait_choice1], session[:trait_choice2], session[:trait_choice3], session[:trait_choice4]]
+    # @prompt_selections = [session[:trait_choice1], session[:trait_choice2], session[:trait_choice3], session[:trait_choice4]]
 
 
 
@@ -76,10 +76,10 @@ class ApplicationsController < ApplicationController
 
 
     Applicant profile
-    Cover Letter Tone: #{@trait.first}
-    Main Professional Strength: #{@trait.second}
-    Experience Level: #{@trait.third}
-    Career Motivation: #{@trait.fourth}
+    Cover Letter Tone: #{@prompt_selection.tone_preference}
+    Main Professional Strength: #{@prompt_selection.main_strength}
+    Experience Level: #{@prompt_selection.experience_level}
+    Career Motivation: #{@prompt_selection.career_motivation}
 
     STRUCTURE TO FOLLOW
   1) Greeting line: "Dear <recipient or Hiring Team>,"
@@ -124,10 +124,10 @@ You are an AI career coach. Based on my applicant profile below, generate a firs
 video pitch script I can record. The pitch must run 60–90 seconds total.
 
 Applicant profile:
-- Video Tone: #{@trait.first}
-- Main Professional Strength (PRIMARY FOCUS): #{@trait.second}
-- Experience Level: #{@trait.third}
-- Career Motivation (PRIMARY FOCUS): #{@trait.fourth}
+- Video Tone: #{@prompt_selection.tone_preference}
+- Main Professional Strength (PRIMARY FOCUS): #{@prompt_selection.main_strength}
+- Experience Level: #{@prompt_selection.experience_level}
+- Career Motivation (PRIMARY FOCUS): #{@prompt_selection.career_motivation}
 
 Priority & content rules:
 - Allocate ~65% of the script to the two PRIMARY FOCUS items (strength + motivation).
@@ -144,14 +144,14 @@ Non-fabrication rules (strict):
 
 Constraints:
 - 135–200 words (aim ~165) to fit 60–90 seconds at natural speaking pace.
-- Conversational, confident, and #{ @trait.first} in tone. Write in first person (“I…”).
+- Conversational, confident, and #{ @prompt_selection.tone_preference} in tone. Write in first person ("I…").
 - Short, speakable sentences. Light stage directions in [brackets] only where helpful.
 
 Structure (with loose timestamps):
-- 0:00 Hook (1–2 lines): Introduction by name, quick human opener that hints at my #{@trait.fourth}.
-- 0:10 Strength + proof (2–4 lines): spotlight #{@trait.second} with ONE concrete example and outcome.
-- 0:35 Motivation & fit (2–3 lines): connect #{@trait.fourth} to the value I’d create in the role/team.
-- 0:55 Experience frame (1–2 lines): position my #{@trait.third} level succinctly (no list).
+- 0:00 Hook (1–2 lines): Introduction by name, quick human opener that hints at my #{@prompt_selection.career_motivation}.
+- 0:10 Strength + proof (2–4 lines): spotlight #{@prompt_selection.main_strength} with ONE concrete example and outcome.
+- 0:35 Motivation & fit (2–3 lines): connect #{@prompt_selection.career_motivation} to the value I’d create in the role/team.
+- 0:55 Experience frame (1–2 lines): position my #{@prompt_selection.experience_level} level succinctly (no list).
 - 1:10 Call-to-action (1–2 lines): invite next step; warm, concise close.
 
 Output format:
@@ -164,7 +164,7 @@ Output format:
    [1:10] ...
 PROMPT
 
- @application.update!(cl_status: "processing", video_status: "processing")
+ @application.update!(coverletter_status: "processing", video_status: "processing")
 
   # enqueue
   CreateClJob.perform_later(@application.id, @llm_prompt_cl)
@@ -183,9 +183,9 @@ end
 
 
   def overview
-    # @traits = [session[:trait_choice1], session[:trait_choice2], session[:trait_choice3], session[:trait_choice4]]
+    # @prompt_selections = [session[:trait_choice1], session[:trait_choice2], session[:trait_choice3], session[:trait_choice4]]
     @application = current_user.applications.find(params[:id])
-    @trait = @application.traits.last
+    @prompt_selection = @application.prompt_selections.last || @application.prompt_selections.create!
 
     @llm_prompt_cl = <<~PROMPT
     ROLE
@@ -201,10 +201,10 @@ end
 
 
     Applicant profile
-    Cover Letter Tone: #{@trait.first}
-    Main Professional Strength: #{@trait.second}
-    Experience Level: #{@trait.third}
-    Career Motivation: #{@trait.fourth}
+    Cover Letter Tone: #{@prompt_selection.tone_preference}
+    Main Professional Strength: #{@prompt_selection.main_strength}
+    Experience Level: #{@prompt_selection.experience_level}
+    Career Motivation: #{@prompt_selection.career_motivation}
 
     STRUCTURE TO FOLLOW
   1) Greeting line: "Dear <recipient or Hiring Team>,"
@@ -249,10 +249,10 @@ You are an AI career coach. Based on my applicant profile below, generate a firs
 video pitch script I can record. The pitch must run 60–90 seconds total.
 
 Applicant profile:
-- Video Tone: #{@trait.first}
-- Main Professional Strength (PRIMARY FOCUS): #{@trait.second}
-- Experience Level: #{@trait.third}
-- Career Motivation (PRIMARY FOCUS): #{@trait.fourth}
+- Video Tone: #{@prompt_selection.tone_preference}
+- Main Professional Strength (PRIMARY FOCUS): #{@prompt_selection.main_strength}
+- Experience Level: #{@prompt_selection.experience_level}
+- Career Motivation (PRIMARY FOCUS): #{@prompt_selection.career_motivation}
 
 Priority & content rules:
 - Allocate ~65% of the script to the two PRIMARY FOCUS items (strength + motivation).
@@ -269,14 +269,14 @@ Non-fabrication rules (strict):
 
 Constraints:
 - 135–200 words (aim ~165) to fit 60–90 seconds at natural speaking pace.
-- Conversational, confident, and #{ @trait.first} in tone. Write in first person (“I…”).
+- Conversational, confident, and #{ @prompt_selection.tone_preference} in tone. Write in first person ("I…").
 - Short, speakable sentences. Light stage directions in [brackets] only where helpful.
 
 Structure (with loose timestamps):
-- 0:00 Hook (1–2 lines): Introduction by name, quick human opener that hints at my #{@trait.fourth}.
-- 0:10 Strength + proof (2–4 lines): spotlight #{@trait.second} with ONE concrete example and outcome.
-- 0:35 Motivation & fit (2–3 lines): connect #{@trait.fourth} to the value I’d create in the role/team.
-- 0:55 Experience frame (1–2 lines): position my #{@trait.third} level succinctly (no list).
+- 0:00 Hook (1–2 lines): Introduction by name, quick human opener that hints at my #{@prompt_selection.career_motivation}.
+- 0:10 Strength + proof (2–4 lines): spotlight #{@prompt_selection.main_strength} with ONE concrete example and outcome.
+- 0:35 Motivation & fit (2–3 lines): connect #{@prompt_selection.career_motivation} to the value I’d create in the role/team.
+- 0:55 Experience frame (1–2 lines): position my #{@prompt_selection.experience_level} level succinctly (no list).
 - 1:10 Call-to-action (1–2 lines): invite next step; warm, concise close.
 
 Output format:
@@ -294,7 +294,7 @@ end
 def status
   app = current_user.applications.find(params[:id])
   render json: {
-    cl_status: app.cl_status,
+    coverletter_status: app.coverletter_status,
     video_status: app.video_status
   }
 end
@@ -306,7 +306,13 @@ end
 
   def generate_cl
     @application = current_user.applications.find(params[:id])
-    cv_file = CvTextExtractor.call(@application)
+    begin
+      cv_file = CvTextExtractor.call(@application)
+    rescue => e
+      Rails.logger.error "Error extracting CV for application #{@application.id}: #{e.message}"
+      cv_file = ""  # Continue without CV content
+    end
+
     prompt = params[:prompt_cl]
     chat = RubyLLM.chat
     chat.with_instructions(prompt)
@@ -315,11 +321,11 @@ end
     @message = response.content
 
     # Save the new generated content to database
-    @application.update!(cl_message: @message)
+    @application.update!(coverletter_message: @message)
 
     # Clear the finalized content since we have new content
     if @application.finals.last.present?
-      @application.finals.last.update(cl: nil)
+      @application.finals.last.update(coverletter_content: nil)
     end
 
     redirect_to overview_application_path(@application), notice: "Cover letter regenerated."
@@ -329,7 +335,13 @@ end
 
   def generate_video
     @application = current_user.applications.find(params[:id])
-    cv_file = CvTextExtractor.call(@application)
+    begin
+      cv_file = CvTextExtractor.call(@application)
+    rescue => e
+      Rails.logger.error "Error extracting CV for application #{@application.id}: #{e.message}"
+      cv_file = ""  # Continue without CV content
+    end
+
     prompt = params[:prompt_video]
     chat = RubyLLM.chat
     chat.with_instructions(prompt)
@@ -354,17 +366,19 @@ end
   def final_cl
     @application = current_user.applications.find(params[:id])
     @final_cl = params[:final_cl].to_s
-    @final = @application.finals.last
-    @final.cl = @final_cl
+    @final = @application.finals.last || @application.finals.create
+    @final.coverletter_content = @final_cl
     @final.save
+    redirect_to overview_application_path(@application)
   end
 
   def final_pitch
     @application = current_user.applications.find(params[:id])
     @final_pitch = params[:final_pitch].to_s
-    @final = @application.finals.last
+    @final = @application.finals.last || @application.finals.create
     @final.pitch = @final_pitch
     @final.save
+    redirect_to overview_application_path(@application)
   end
 
   def video_page
@@ -410,7 +424,13 @@ end
   private
 
  def generate_name(application)
-    cv_file = CvTextExtractor.call(application)
+    begin
+      cv_file = CvTextExtractor.call(application)
+    rescue => e
+      Rails.logger.error "Error extracting CV for application #{application.id}: #{e.message}"
+      cv_file = ""  # Continue without CV content
+    end
+
     prompt = <<~PROMPT
     From the job description I give to you, I want you to extrat the company name that I'm applying to. RULES: The response
     should only contain the name of the company, no talking or chatting, I want it to be very straight forward. No response
@@ -427,7 +447,13 @@ end
 
 
    def generate_title(application)
-    cv_file = CvTextExtractor.call(application)
+    begin
+      cv_file = CvTextExtractor.call(application)
+    rescue => e
+      Rails.logger.error "Error extracting CV for application #{application.id}: #{e.message}"
+      cv_file = ""  # Continue without CV content
+    end
+
     prompt = <<~PROMPT
     From the job description I give to you, I want you to extrat the role that I'm applying to. RULES: The response
     should only contain the role, no talking or chatting, I want it to be very straight forward. Ex: Chef Backend Developer. No response
@@ -444,16 +470,28 @@ end
 
 
   def generate_cl_internal(prompt)
-    cv_file   = CvTextExtractor.call(@application)
+    begin
+      cv_file = CvTextExtractor.call(@application)
+    rescue => e
+      Rails.logger.error "Error extracting CV for application #{@application.id}: #{e.message}"
+      cv_file = ""  # Continue without CV content
+    end
+
     chat      = RubyLLM.chat
     chat.with_instructions(prompt)
     response  = chat.ask("Help me generate the paragraphs with the job description here: #{@application.job_d}, my resume is here: #{cv_file}, please refer to
         my resume when generating the contents.")
-    @cl_message = response.content
+    @coverletter_message = response.content
   end
 
   def generate_video_internal(prompt)
-    cv_file   = CvTextExtractor.call(@application)
+    begin
+      cv_file = CvTextExtractor.call(@application)
+    rescue => e
+      Rails.logger.error "Error extracting CV for application #{@application.id}: #{e.message}"
+      cv_file = ""  # Continue without CV content
+    end
+
     chat      = RubyLLM.chat
     chat.with_instructions(prompt)
     response  = chat.ask("Help me generate the pitch with the job description here: #{@application.job_d}, my resume is here: #{cv_file}, please refer to
@@ -465,7 +503,7 @@ end
     params.require(:application).permit(:job_d, :cv)
   end
 
-  def trait_params
+  def prompt_selection_params
     params.permit(:trait_choice1, :trait_choice2, :trait_choice2_other, :trait_choice3, :trait_choice4, :trait_choice4_other)
   end
 end

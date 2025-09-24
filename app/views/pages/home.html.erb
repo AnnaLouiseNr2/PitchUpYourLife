@@ -1,17 +1,19 @@
 <div class="bg-white">
 
   <!-- Hero Section with Background Image -->
-  <section class="position-relative overflow-hidden d-flex align-items-center" style="min-height: 70vh; background-image: linear-gradient(135deg, rgba(102, 126, 234, 0.4) 0%, rgba(118, 75, 162, 0.4) 100%), url('<%= asset_path("hero.jpg") %>'); background-size: cover; background-position: center; background-attachment: fixed;">
+  <section class="position-relative overflow-hidden d-flex align-items-center" style="min-height: 70vh; background-image: linear-gradient(90deg, rgba(102, 126, 234, 0.95) 0%, rgba(118, 75, 162, 0.2) 100%), url('<%= asset_path("hero.jpg") %>'); background-size: cover; background-position: center; background-attachment: fixed;">
     <div class="container-fluid">
       <div class="row min-vh-70 align-items-center">
         <div class="col-lg-6 py-5" style="padding-left: 5rem;">
           <div class="text-white">
             <h1 class="display-3 fw-bold mb-4" style="line-height: 1.2;">
-              AI-Powered Job Applications
+              Land Your Dream Job with
+              <span class="text-warning">AI-Powered</span>
+              Applications
             </h1>
             <p class="lead mb-5" style="font-size: 1.25rem; max-width: 500px; opacity: 0.9;">
-              Upload your CV and job description, get personalized cover letters, company insights,
-              and video pitch scripts. Land your dream job with AI assistance.
+              Upload your CV and job description. Get personalized cover letters, company insights,
+              and video pitch scripts that get you hired faster.
             </p>
             <div class="d-flex flex-column flex-sm-row gap-3">
               <% if user_signed_in? %>
@@ -39,247 +41,428 @@
     </div>
   </section>
 
-  <!-- Features Section -->
-  <section id="features" class="py-5" style="padding-top: 6rem !important; padding-bottom: 6rem !important;">
-    <div class="container">
-      <div class="text-center mb-5" style="margin-bottom: 4rem !important;">
+<!-- Features Section -->
+<section id="features" class="py-8 bg-light">
+  <div class="container">
+    <!-- Section Header -->
+    <div class="row">
+      <div class="col-lg-8 mx-auto text-center mb-5">
         <h2 class="display-5 fw-bold text-dark mb-4">
-          Everything you need to succeed
+          Everything you need to
+          <span class="text-gradient-primary">succeed</span>
         </h2>
-        <p class="lead text-secondary" style="max-width: 600px; margin: 0 auto;">
+        <p class="lead text-muted fs-6">
           Our AI analyzes your profile and target job to create personalized application materials
+          that make you stand out from the competition.
         </p>
       </div>
+    </div>
 
-      <div class="row g-5">
-        <div class="col-md-4">
-          <div class="bg-white rounded-4 shadow-sm border p-5 text-center h-100 position-relative" style="border-color: #e5e7eb !important; transition: all 0.3s ease;">
+    <!-- Features Grid -->
+    <div class="row g-4">
+      <!-- Feature 1 -->
+      <div class="col-lg-4 col-md-6">
+        <div class="card h-100 border-0 shadow-sm card-hover rounded-4">
+          <div class="card-body p-5 text-center">
             <div class="d-flex justify-content-center mb-4">
-              <div class="rounded-circle d-flex align-items-center justify-content-center border-3" style="background-color: rgba(102, 126, 234, 0.1); border-color: rgba(102, 126, 234, 0.3) !important; width: 80px; height: 80px;">
-                <i class="bi bi-chat-square-text fs-3" style="color: #667eea;"></i>
+              <div class="icon-box-lg icon-box-primary rounded-4 d-flex align-items-center justify-content-center">
+                <span style="font-size: 2rem;">💬</span>
               </div>
             </div>
-            <h3 class="h4 fw-bold text-dark mb-4">Smart Cover Letters</h3>
-            <p class="text-secondary" style="line-height: 1.7;">
+            <h3 class="h4 fw-bold mb-3">Smart Cover Letters</h3>
+            <p class="text-muted mb-4 lh-lg">
               AI analyzes the job description and your experience to craft compelling,
-              personalized cover letters that get noticed.
+              personalized cover letters that get noticed by hiring managers.
             </p>
+            <div class="d-flex justify-content-center">
+              <span class="badge bg-primary bg-opacity-10 text-primary px-3 py-2 rounded-pill">
+                <span class="me-1">⚡</span>
+                Instant Generation
+              </span>
+            </div>
           </div>
         </div>
+      </div>
 
-        <div class="col-md-4">
-          <div class="bg-white rounded-4 shadow-sm border p-5 text-center h-100 position-relative" style="border-color: #e5e7eb !important; transition: all 0.3s ease;">
+      <!-- Feature 2 -->
+      <div class="col-lg-4 col-md-6">
+        <div class="card h-100 border-0 shadow-sm card-hover rounded-4">
+          <div class="card-body p-5 text-center">
             <div class="d-flex justify-content-center mb-4">
-              <div class="rounded-circle d-flex align-items-center justify-content-center border-3" style="background-color: rgba(102, 126, 234, 0.1); border-color: rgba(102, 126, 234, 0.3) !important; width: 80px; height: 80px;">
-                <i class="bi bi-building fs-3" style="color: #667eea;"></i>
+              <div class="icon-box-lg icon-box-success rounded-4 d-flex align-items-center justify-content-center">
+                <span style="font-size: 2rem;">🏢</span>
               </div>
             </div>
-            <h3 class="h4 fw-bold text-dark mb-4">Company Insights</h3>
-            <p class="text-secondary" style="line-height: 1.7;">
+            <h3 class="h4 fw-bold mb-3">Company Insights</h3>
+            <p class="text-muted mb-4 lh-lg">
               Get detailed company analysis and talking points to show you've done your research
-              and understand their business.
+              and understand their business inside and out.
             </p>
+            <div class="d-flex justify-content-center">
+              <span class="badge bg-success bg-opacity-10 text-success px-3 py-2 rounded-pill">
+                <span class="me-1">📈</span>
+                Deep Analysis
+              </span>
+            </div>
           </div>
         </div>
+      </div>
 
-        <div class="col-md-4">
-          <div class="bg-white rounded-4 shadow-sm border p-5 text-center h-100 position-relative" style="border-color: #e5e7eb !important; transition: all 0.3s ease;">
+      <!-- Feature 3 -->
+      <div class="col-lg-4 col-md-6">
+        <div class="card h-100 border-0 shadow-sm card-hover rounded-4">
+          <div class="card-body p-5 text-center">
             <div class="d-flex justify-content-center mb-4">
-              <div class="rounded-circle d-flex align-items-center justify-content-center border-3" style="background-color: rgba(102, 126, 234, 0.1); border-color: rgba(102, 126, 234, 0.3) !important; width: 80px; height: 80px;">
-                <i class="bi bi-camera-video fs-3" style="color: #667eea;"></i>
+              <div class="icon-box-lg icon-box-primary rounded-4 d-flex align-items-center justify-content-center">
+                <span style="font-size: 2rem;">🎥</span>
               </div>
             </div>
-            <h3 class="h4 fw-bold text-dark mb-4">Video Pitch Scripts</h3>
-            <p class="text-secondary" style="line-height: 1.7;">
+            <h3 class="h4 fw-bold mb-3">Video Pitch Scripts</h3>
+            <p class="text-muted mb-4 lh-lg">
               Receive professionally crafted video pitch scripts tailored to your background
               and the specific role you're applying for.
             </p>
+            <div class="d-flex justify-content-center">
+              <span class="badge bg-warning bg-opacity-10 text-warning px-3 py-2 rounded-pill">
+                <span class="me-1">🎬</span>
+                Personal Brand
+              </span>
+            </div>
           </div>
         </div>
       </div>
     </div>
-  </section>
 
-  <!-- How it Works Section -->
-  <section id="how-it-works" class="py-5 bg-light" style="padding-top: 6rem !important; padding-bottom: 6rem !important;">
-    <div class="container">
-      <div class="text-center mb-5" style="margin-bottom: 4rem !important;">
+    <!-- Stats Row -->
+    <div class="row mt-5 pt-5">
+      <div class="col-12">
+        <div class="bg-white rounded-4 shadow-sm p-5">
+          <div class="row text-center g-4">
+            <div class="col-6 col-lg-3">
+              <div class="h2 fw-bold text-primary mb-1">10,000+</div>
+              <p class="text-muted mb-0">Happy Users</p>
+            </div>
+            <div class="col-6 col-lg-3">
+              <div class="h2 fw-bold text-success mb-1">85%</div>
+              <p class="text-muted mb-0">Success Rate</p>
+            </div>
+            <div class="col-6 col-lg-3">
+              <div class="h2 fw-bold text-warning mb-1">50K+</div>
+              <p class="text-muted mb-0">Applications Created</p>
+            </div>
+            <div class="col-6 col-lg-3">
+              <div class="h2 fw-bold text-info mb-1">3 min</div>
+              <p class="text-muted mb-0">Average Setup Time</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- How It Works Section -->
+<section id="how-it-works" class="py-8">
+  <div class="container">
+    <!-- Section Header -->
+    <div class="row">
+      <div class="col-lg-8 mx-auto text-center mb-5">
         <h2 class="display-5 fw-bold text-dark mb-4">
-          How it works
+          How it <span class="text-gradient-primary">works</span>
         </h2>
-        <p class="lead text-secondary" style="max-width: 600px; margin: 0 auto;">
-          Get professional application materials in three simple steps
+        <p class="lead text-muted fs-6">
+          Get professional application materials in three simple steps.
+          No complex setup, no learning curve.
         </p>
       </div>
+    </div>
 
-      <div class="row g-5" style="margin-top: 2rem;">
-        <div class="col-md-4 text-center">
-          <div class="position-relative mb-5">
-            <div class="d-flex justify-content-center mb-4">
-              <div class="rounded-circle d-flex align-items-center justify-content-center shadow-lg" style="background: linear-gradient(135deg, #1EDD88 0%, #17c474 100%); width: 120px; height: 120px;">
-                <i class="bi bi-upload text-white" style="font-size: 3rem;"></i>
-              </div>
-            </div>
-            <div class="position-absolute" style="top: -15px; right: 35%;">
-              <span class="d-inline-flex align-items-center justify-content-center rounded-circle fw-bold text-white shadow-lg" style="width: 3rem; height: 3rem; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); font-size: 1.2rem;">
-                1
-              </span>
+    <!-- Steps -->
+    <div class="row g-5 align-items-center">
+      <!-- Step 1 -->
+      <div class="col-lg-4">
+        <div class="text-center position-relative">
+          <!-- Step Number -->
+          <div class="position-relative mb-4">
+            <div class="bg-gradient-primary rounded-circle d-flex align-items-center justify-content-center mx-auto shadow-lg"
+                 style="width: 120px; height: 120px;">
+              <span class="text-white" style="font-size: 3rem;">📄</span>
             </div>
           </div>
-          <h3 class="h4 fw-bold text-dark mb-4">Upload JD & CV</h3>
-          <p class="text-secondary" style="line-height: 1.7; max-width: 300px; margin: 0 auto;">
+          <h3 class="h4 fw-bold mb-3">Upload & Analyze</h3>
+          <p class="text-muted lh-lg">
             Simply upload your CV and the job description. Our AI analyzes both documents
-            to understand your background and the role requirements.
+            to understand your background and role requirements.
           </p>
         </div>
+      </div>
 
-        <div class="col-md-4 text-center">
-          <div class="position-relative mb-5">
-            <div class="d-flex justify-content-center mb-4">
-              <div class="rounded-circle d-flex align-items-center justify-content-center shadow-lg" style="background: linear-gradient(135deg, #1EDD88 0%, #17c474 100%); width: 120px; height: 120px;">
-                <i class="bi bi-cpu text-white" style="font-size: 3rem;"></i>
-              </div>
-            </div>
-            <div class="position-absolute" style="top: -15px; right: 35%;">
-              <span class="d-inline-flex align-items-center justify-content-center rounded-circle fw-bold text-white shadow-lg" style="width: 3rem; height: 3rem; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); font-size: 1.2rem;">
-                2
-              </span>
+      <!-- Step 2 -->
+      <div class="col-lg-4">
+        <div class="text-center position-relative">
+          <!-- Step Number -->
+          <div class="position-relative mb-4">
+            <div class="bg-gradient-success rounded-circle d-flex align-items-center justify-content-center mx-auto shadow-lg"
+                 style="width: 120px; height: 120px;">
+              <span class="text-white" style="font-size: 3rem;">🤖</span>
             </div>
           </div>
-          <h3 class="h4 fw-bold text-dark mb-4">AI Magic Happens</h3>
-          <p class="text-secondary" style="line-height: 1.7; max-width: 300px; margin: 0 auto;">
+          <h3 class="h4 fw-bold mb-3">AI Generation</h3>
+          <p class="text-muted lh-lg">
             Our AI generates personalized cover letters, company insights,
-            and pitch scripts based on your profile and the job requirements.
+            and pitch scripts based on your unique profile and job requirements.
           </p>
         </div>
+      </div>
 
-        <div class="col-md-4 text-center">
-          <div class="position-relative mb-5">
-            <div class="d-flex justify-content-center mb-4">
-              <div class="rounded-circle d-flex align-items-center justify-content-center shadow-lg" style="background: linear-gradient(135deg, #1EDD88 0%, #17c474 100%); width: 120px; height: 120px;">
-                <i class="bi bi-check2-circle text-white" style="font-size: 3rem;"></i>
-              </div>
-            </div>
-            <div class="position-absolute" style="top: -15px; right: 35%;">
-              <span class="d-inline-flex align-items-center justify-content-center rounded-circle fw-bold text-white shadow-lg" style="width: 3rem; height: 3rem; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); font-size: 1.2rem;">
-                3
-              </span>
+      <!-- Step 3 -->
+      <div class="col-lg-4">
+        <div class="text-center position-relative">
+          <!-- Step Number -->
+          <div class="position-relative mb-4">
+            <div class="bg-gradient-primary rounded-circle d-flex align-items-center justify-content-center mx-auto shadow-lg"
+                 style="width: 120px; height: 120px;">
+              <span class="text-white" style="font-size: 3rem;">✅</span>
             </div>
           </div>
-          <h3 class="h4 fw-bold text-dark mb-4">Review & Apply</h3>
-          <p class="text-secondary" style="line-height: 1.7; max-width: 300px; margin: 0 auto;">
+          <h3 class="h4 fw-bold mb-3">Review & Apply</h3>
+          <p class="text-muted lh-lg">
             Review all generated materials, make final edits, and download your complete
             application package ready for submission.
           </p>
         </div>
       </div>
     </div>
-  </section>
 
-  <!-- Testimonials Section -->
-  <section id="testimonials" class="py-5" style="padding-top: 6rem !important; padding-bottom: 6rem !important;">
-    <div class="container">
-      <div class="text-center mb-5" style="margin-bottom: 4rem !important;">
+    <!-- Process Flow -->
+    <div class="row mt-5">
+      <div class="col-12">
+        <div class="bg-gradient-light rounded-4 p-5">
+          <div class="row align-items-center">
+            <div class="col-lg-8">
+              <h4 class="fw-bold mb-3">Ready to transform your job search?</h4>
+              <p class="text-muted mb-0 fs-5">
+                Join thousands of professionals who've accelerated their careers with AI-powered applications.
+              </p>
+            </div>
+            <div class="col-lg-4 text-lg-end mt-3 mt-lg-0">
+              <% if user_signed_in? %>
+                <%= link_to new_application_path,
+                            class: "btn btn-gradient-primary btn-lg px-5 py-3 fw-bold" do %>
+                  <span class="me-2">➕</span>
+                  Create Application
+                <% end %>
+              <% else %>
+                <%= link_to new_user_registration_path,
+                            class: "btn btn-gradient-primary btn-lg px-5 py-3 fw-bold" do %>
+                  <span class="me-2">🚀</span>
+                  Get Started Free
+                <% end %>
+              <% end %>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Testimonials Section -->
+<section id="testimonials" class="py-8 bg-light">
+  <div class="container">
+    <!-- Section Header -->
+    <div class="row">
+      <div class="col-lg-8 mx-auto text-center mb-5">
         <h2 class="display-5 fw-bold text-dark mb-4">
-          Loved by job seekers
+          Loved by <span class="text-gradient-primary">job seekers</span>
         </h2>
-        <p class="lead text-secondary" style="max-width: 600px; margin: 0 auto;">
-          See what our users say about their experience
+        <p class="lead text-muted fs-6">
+          See what professionals say about transforming their job search with CareerCompanion.
         </p>
       </div>
+    </div>
 
-      <div class="row g-5">
-        <div class="col-md-4">
-          <div class="bg-white rounded-4 shadow-sm border p-5 h-100" style="border-color: #e5e7eb !important;">
+    <!-- Testimonials Grid -->
+    <div class="row g-4">
+      <!-- Testimonial 1 -->
+      <div class="col-lg-4">
+        <div class="card h-100 border-0 shadow-sm card-hover rounded-4">
+          <div class="card-body p-5">
+            <!-- Stars -->
             <div class="d-flex mb-4">
               <% 5.times do %>
-                <i class="bi bi-star-fill text-warning me-1" style="font-size: 1.1rem;"></i>
+                <span class="text-warning me-1">⭐</span>
               <% end %>
             </div>
-            <p class="text-secondary fst-italic mb-4" style="font-size: 1.1rem; line-height: 1.7;">
-              "CareerCompanion helped me land interviews at 3 top tech companies. The cover letters
-              were so much better than what I could write myself."
-            </p>
-            <div class="d-flex align-items-center mt-auto">
-              <div class="rounded-circle d-flex align-items-center justify-content-center me-3" style="width: 60px; height: 60px; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);">
-                <i class="bi bi-person-fill text-white fs-4"></i>
+            <!-- Quote -->
+            <blockquote class="mb-4">
+              <p class="text-muted fst-italic fs-5 lh-lg mb-0">
+                "CareerCompanion helped me land interviews at 3 top tech companies.
+                The cover letters were so much better than what I could write myself.
+                Game changer!"
+              </p>
+            </blockquote>
+            <!-- Author -->
+            <div class="d-flex align-items-center">
+              <div class="bg-gradient-primary rounded-circle d-flex align-items-center justify-content-center me-3"
+                   style="width: 60px; height: 60px;">
+                <span class="text-white fs-4">👤</span>
               </div>
               <div>
-                <p class="fw-bold text-dark mb-0" style="font-size: 1.1rem;">Sarah Chen</p>
-                <p class="text-secondary mb-0">Software Engineer</p>
+                <h6 class="fw-bold mb-1">Sarah C.</h6>
+                <small class="text-muted">Software Engineer</small>
               </div>
             </div>
           </div>
         </div>
+      </div>
 
-        <div class="col-md-4">
-          <div class="bg-white rounded-4 shadow-sm border p-5 h-100" style="border-color: #e5e7eb !important;">
+      <!-- Testimonial 2 -->
+      <div class="col-lg-4">
+        <div class="card h-100 border-0 shadow-sm card-hover rounded-4">
+          <div class="card-body p-5">
+            <!-- Stars -->
             <div class="d-flex mb-4">
               <% 5.times do %>
-                <i class="bi bi-star-fill text-warning me-1" style="font-size: 1.1rem;"></i>
+                <span class="text-warning me-1">⭐</span>
               <% end %>
             </div>
-            <p class="text-secondary fst-italic mb-4" style="font-size: 1.1rem; line-height: 1.7;">
-              "The company insights were incredibly detailed. I felt so prepared for my interviews
-              and got the job at my dream startup!"
-            </p>
-            <div class="d-flex align-items-center mt-auto">
-              <div class="rounded-circle d-flex align-items-center justify-content-center me-3" style="width: 60px; height: 60px; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);">
-                <i class="bi bi-person-fill text-white fs-4"></i>
+            <!-- Quote -->
+            <blockquote class="mb-4">
+              <p class="text-muted fst-italic fs-5 lh-lg mb-0">
+                "The company insights were incredibly detailed. I felt so prepared for my interviews
+                and got the job at my dream startup! Worth every penny."
+              </p>
+            </blockquote>
+            <!-- Author -->
+            <div class="d-flex align-items-center">
+              <div class="bg-gradient-success rounded-circle d-flex align-items-center justify-content-center me-3"
+                   style="width: 60px; height: 60px;">
+                <span class="text-white fs-4">👤</span>
               </div>
               <div>
-                <p class="fw-bold text-dark mb-0" style="font-size: 1.1rem;">Michael Rodriguez</p>
-                <p class="text-secondary mb-0">Product Manager</p>
+                <h6 class="fw-bold mb-1">Michael R.</h6>
+                <small class="text-muted">Product Manager</small>
               </div>
             </div>
           </div>
         </div>
+      </div>
 
-        <div class="col-md-4">
-          <div class="bg-white rounded-4 shadow-sm border p-5 h-100" style="border-color: #e5e7eb !important;">
+      <!-- Testimonial 3 -->
+      <div class="col-lg-4">
+        <div class="card h-100 border-0 shadow-sm card-hover rounded-4">
+          <div class="card-body p-5">
+            <!-- Stars -->
             <div class="d-flex mb-4">
               <% 5.times do %>
-                <i class="bi bi-star-fill text-warning me-1" style="font-size: 1.1rem;"></i>
+                <span class="text-warning me-1">⭐</span>
               <% end %>
             </div>
-            <p class="text-secondary fst-italic mb-4" style="font-size: 1.1rem; line-height: 1.7;">
-              "I was struggling with video interviews until I used the pitch scripts.
-              They gave me the confidence and structure I needed."
-            </p>
-            <div class="d-flex align-items-center mt-auto">
-              <div class="rounded-circle d-flex align-items-center justify-content-center me-3" style="width: 60px; height: 60px; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);">
-                <i class="bi bi-person-fill text-white fs-4"></i>
+            <!-- Quote -->
+            <blockquote class="mb-4">
+              <p class="text-muted fst-italic fs-5 lh-lg mb-0">
+                "I was struggling with video interviews until I used the pitch scripts.
+                They gave me the confidence and structure I needed to succeed."
+              </p>
+            </blockquote>
+            <!-- Author -->
+            <div class="d-flex align-items-center">
+              <div class="bg-gradient-primary rounded-circle d-flex align-items-center justify-content-center me-3"
+                   style="width: 60px; height: 60px;">
+                <span class="text-white fs-4">👤</span>
               </div>
               <div>
-                <p class="fw-bold text-dark mb-0" style="font-size: 1.1rem;">Emily Johnson</p>
-                <p class="text-secondary mb-0">Marketing Specialist</p>
+                <h6 class="fw-bold mb-1">Emily J.</h6>
+                <small class="text-muted">Marketing Director</small>
               </div>
             </div>
           </div>
         </div>
       </div>
     </div>
-  </section>
 
-  <!-- CTA Section -->
-  <section class="py-5" style="padding-top: 6rem !important; padding-bottom: 6rem !important; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);">
-    <div class="container text-center">
-      <h2 class="display-5 fw-bold text-white mb-4">
-        Ready to land your dream job?
-      </h2>
-      <p class="lead text-white opacity-75 mb-5" style="max-width: 600px; margin-left: auto; margin-right: auto;">
-        Join thousands of successful job seekers using AI to get hired faster
-      </p>
-      <% if user_signed_in? %>
-        <%= link_to 'Create Your First Application <i class="bi bi-arrow-right ms-2"></i>'.html_safe,
-                    new_application_path,
-                    class: "btn btn-light btn-lg d-inline-flex align-items-center shadow-lg px-5 py-3" %>
-      <% else %>
-        <%= link_to 'Start Your Application <i class="bi bi-arrow-right ms-2"></i>'.html_safe,
-                    new_user_registration_path,
-                    class: "btn btn-light btn-lg d-inline-flex align-items-center shadow-lg px-5 py-3" %>
-      <% end %>
+    <!-- Trust Indicators -->
+    <div class="row mt-5">
+      <div class="col-12">
+        <div class="text-center">
+          <div class="row g-4">
+            <div class="col-6 col-lg-3">
+              <div class="h3 fw-bold text-primary mb-1">4.9/5</div>
+              <p class="text-muted small mb-0">Average Rating</p>
+            </div>
+            <div class="col-6 col-lg-3">
+              <div class="h3 fw-bold text-success mb-1">2,500+</div>
+              <p class="text-muted small mb-0">5-Star Reviews</p>
+            </div>
+            <div class="col-6 col-lg-3">
+              <div class="h3 fw-bold text-warning mb-1">95%</div>
+              <p class="text-muted small mb-0">Would Recommend</p>
+            </div>
+            <div class="col-6 col-lg-3">
+              <div class="h3 fw-bold text-info mb-1">24hr</div>
+              <p class="text-muted small mb-0">Average Response</p>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
-  </section>
+  </div>
+</section>
 
-</div>
+<!-- Final CTA Section -->
+<section class="py-8 bg-gradient-primary">
+  <div class="container">
+    <div class="row">
+      <div class="col-lg-8 mx-auto text-center text-white">
+        <h2 class="display-4 fw-bold mb-4">
+          Ready to land your dream job?
+        </h2>
+        <p class="lead fs-5 mb-5 opacity-90">
+          Join thousands of successful job seekers using AI to get hired faster.
+          Start your journey today - it's free!
+        </p>
+
+        <!-- CTA Buttons -->
+        <div class="d-flex flex-column flex-sm-row gap-3 justify-content-center mb-5">
+          <% if user_signed_in? %>
+            <%= link_to new_application_path,
+                        class: "btn btn-light btn-lg px-5 py-4 fw-bold shadow-lg" do %>
+              <span class="me-2">➕</span>
+              Create Your First Application
+              <span class="ms-2">→</span>
+            <% end %>
+          <% else %>
+            <%= link_to new_user_registration_path,
+                        class: "btn btn-light btn-lg px-5 py-4 fw-bold shadow-lg" do %>
+              <span class="me-2">🚀</span>
+              Start Your Application Journey
+              <span class="ms-2">→</span>
+            <% end %>
+            <%= link_to new_user_session_path,
+                        class: "btn btn-outline-light btn-lg px-5 py-4 fw-bold" do %>
+              <span class="me-2">🔑</span>
+              Sign In
+            <% end %>
+          <% end %>
+        </div>
+
+        <!-- Final Trust Signals -->
+        <div class="row g-3 text-center opacity-75">
+          <div class="col-4">
+            <span class="fs-4 mb-2 d-block">🛡️</span>
+            <small>Secure & Private</small>
+          </div>
+          <div class="col-4">
+            <span class="fs-4 mb-2 d-block">⏱️</span>
+            <small>3 Min Setup</small>
+          </div>
+          <div class="col-4">
+            <span class="fs-4 mb-2 d-block">💳</span>
+            <small>No Credit Card</small>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>

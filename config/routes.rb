@@ -14,8 +14,8 @@ Rails.application.routes.draw do
   resources :applications do
 
   member do
-    get  :trait
-    patch :trait
+    get  :prompt_selection
+    patch :prompt_selection
     get  :overview
     post :generate_cl
     post :generate_video

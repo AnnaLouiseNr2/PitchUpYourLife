@@ -1,81 +1,625 @@
+<!-- Page Header -->
 <div class="page-header">
-  <h1 class="page-title">Create New Application</h1>
-  <h2 class="page-subtitle">
-    Upload your CV and the job description to get started with AI-powered application assistance
-  </h2>
+  <div class="container">
+    <div class="row">
+      <div class="col-12">
+        <h1 class="main-title">Create New Application</h1>
+        <h2 class="main-subtitle">
+          Upload your CV and job description to get started with AI-powered application assistance
+        </h2>
+      </div>
+    </div>
+  </div>
 </div>
 
-<div class="centered-wrapper">
-  <%= simple_form_for @application, html: { class: 'application-form', multipart: true, data: { controller: "application-form" } } do |f| %>
-    <div class="d-flex justify-content-center align-items-start gap-4" style="width: 1400px; max-width: 100%;">
+<!-- Main Content -->
+<div class="main-content">
+  <div class="container">
+    <div class="row justify-content-center">
+      <!-- Form Column -->
+      <div class="col-12" style="max-width: 1400px; margin: 0 auto;">
+        <!-- Form Wrapper -->
+        <div class="form-wrapper">
+          <%= simple_form_for @application, html: { class: 'application-form', multipart: true } do |f| %>
 
-          <div class="d-flex flex-column" style="flex: 0 0 20%; max-width: 20%;">
-            <div class="d-flex flex-column p-4 rounded-4 shadow bg-white border" style="height: 450px;">
-              <h2 class="h5 mb-4 text-center"><strong>Tips for best results</strong></h2>
-              <div class="flex-grow-1 p-2 overflow-auto">
-                <ul class="ps-3">
-                  <li class="mb-3">Make sure your CV is up-to-date and includes your most relevant experience</li>
-                  <li class="mb-3">Upload the complete job description including requirements and responsibilities</li>
-                  <li class="mb-3">Files should be clear and readable for the best AI analysis</li>
-                  <li class="mb-3">Include your preferences and customizations</li>
+            <!-- CV Upload Section -->
+            <div class="form-section">
+              <div class="section-header">
+                <div class="section-icon">
+                  <i class="bi bi-file-earmark-person"></i>
+                </div>
+                <div class="section-content">
+                  <h3 class="section-title">Upload Your CV</h3>
+                  <p class="section-description">Upload your resume or curriculum vitae</p>
+                </div>
+              </div>
+
+              <div class="upload-area">
+                <%= f.file_field :cv,
+                    id: "cv-upload",
+                    accept: '.pdf,.doc,.docx',
+                    class: 'file-input',
+                    style: 'display: none;' %>
+
+                <label for="cv-upload" class="upload-zone">
+                  <div class="upload-content">
+                    <div class="upload-icon">
+                      <i class="bi bi-cloud-upload"></i>
+                    </div>
+                    <div class="upload-text">
+                      <h4 class="upload-title">
+                        <span class="d-none d-sm-inline">Drag and drop your CV here or click to browse</span>
+                        <span class="d-sm-none">Tap to upload your CV</span>
+                      </h4>
+                      <p class="upload-subtitle">
+                        Supports PDF, DOC, DOCX files up to 10MB
+                      </p>
+                    </div>
+                  </div>
+                  <div class="upload-border"></div>
+                </label>
+              </div>
+            </div>
+
+            <!-- Job Description Section -->
+            <div class="form-section">
+              <div class="section-header">
+                <div class="section-icon">
+                  <i class="bi bi-file-earmark-text"></i>
+                </div>
+                <div class="section-content">
+                  <h3 class="section-title">Job Description</h3>
+                  <p class="section-description">Paste the complete job posting</p>
+                </div>
+              </div>
+
+              <div class="textarea-wrapper">
+                <%= f.text_area :job_d,
+                    placeholder: "Paste the complete job description here...\n\nInclude:\n• Job title and company\n• Requirements and qualifications\n• Responsibilities and duties\n• Benefits and compensation (if mentioned)",
+                    class: 'job-textarea',
+                    rows: 10 %>
+                <div class="textarea-footer">
+                  <div class="character-info">
+                    <i class="bi bi-info-circle"></i>
+                    <small>The more detailed the job description, the better our AI can tailor your application</small>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Action Buttons -->
+            <div class="action-buttons">
+              <div class="button-group">
+                <%= link_to applications_path, class: "btn-secondary" do %>
+                  <i class="bi bi-arrow-left me-2"></i>
+                  <span class="d-none d-sm-inline">Back to Applications</span>
+                  <span class="d-sm-none">Back</span>
+                <% end %>
+                <%= f.submit "Continue to Personalization", class: "btn-primary", data: { "desktop-text" => "Continue to Personalization", "mobile-text" => "Continue" } %>
+              </div>
+
+              <!-- Progress Bar -->
+              <div class="progress-bar-wrapper">
+                <div class="progress-bar">
+                  <div class="progress-fill" style="width: 25%;"></div>
+                </div>
+                <div class="progress-steps">
+                  <div class="progress-step active">
+                    <div class="step-circle">
+                      <i class="bi bi-upload"></i>
+                    </div>
+                    <span class="step-label">Upload Files</span>
+                  </div>
+                  <div class="progress-step">
+                    <div class="step-circle">
+                      <span>2</span>
+                    </div>
+                    <span class="step-label">Personalize</span>
+                  </div>
+                  <div class="progress-step">
+                    <div class="step-circle">
+                      <span>3</span>
+                    </div>
+                    <span class="step-label">Generate</span>
+                  </div>
+                  <div class="progress-step">
+                    <div class="step-circle">
+                      <span>4</span>
+                    </div>
+                    <span class="step-label">Record</span>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Tips Banner -->
+              <div class="tips-banner">
+                <div class="tips-banner-header">
+                  <i class="bi bi-lightbulb-fill"></i>
+                  <h3>Tips for best results</h3>
+                </div>
+                <ul class="tips-list">
+                  <li>Ensure your CV is up-to-date with relevant experience</li>
+                  <li>Include complete job description with requirements</li>
+                  <li>Files should be clear and readable (PDF preferred)</li>
                 </ul>
               </div>
-            </div>
-          </div>
 
-          <div class="d-flex flex-column p-4 rounded-4 shadow bg-white border" style="flex: 0 0 38.25%; max-width: 38.25%; height: 450px;">
-            <h2 class="h5 mb-4 text-center"><strong>Your CV</strong></h2>
-            <div class="d-flex flex-column flex-grow-1 align-items-center justify-content-center">
-              <label class="file-upload w-100 h-100 d-flex flex-column align-items-center justify-content-center">
-                <%= f.file_field :cv,
-                    accept: '.pdf,.doc,.docx',
-                    class: 'hidden-file-input',
-                    data: {
-                      application_form_target: "fileInput",
-                      action: "change->application-form#handleFileChange"
-                    } %>
-                <div class="upload-icon mb-3" data-application-form-target="uploadIcon">
-                  <svg xmlns="http://www.w3.org/2000/svg" class="icon" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                          d="M4 16v1a2 2 0 002 2h12a2 2 0 002-2v-1M12 12V4m0 0L8 8m4-4l4 4" />
-                  </svg>
-                </div>
-                <p class="upload-text-main text-center text-truncate" data-application-form-target="filePreview" style="max-width: 100%; overflow: hidden; white-space: nowrap;">
-                  Drag and drop your CV here or click to browse
-                </p>
-                <p class="upload-text-sub text-center">Supports .pdf, .docx, .doc files up to 10MB</p>
-              </label>
-            </div>
-          </div>
-
-          <div class="d-flex flex-column p-4 rounded-4 shadow bg-white border" style="flex: 0 0 38.25%; max-width: 38.25%; height: 450px;">
-            <h2 class="h5 mb-4 text-center"><strong>Job Description</strong></h2>
-            <div class="d-flex flex-column flex-grow-1">
-              <div class="flex-grow-1 d-flex align-items-center justify-content-center">
-                <%= f.text_area :job_d,
-                    placeholder: "Paste the job description here as plain text...",
-                    class: 'job-description-textarea w-100 h-100',
-                    style: 'resize: none; outline: none; border-radius: 0.25rem; border: 1px solid #ced4da;',
-                    data: {
-                      application_form_target: "textInput",
-                      action: "input->application-form#handleTextInput change->application-form#handleTextInput"
-                    } %>
+              <div class="security-note">
+                <i class="bi bi-shield-check"></i>
+                <small>Your files are processed securely and never stored permanently</small>
               </div>
             </div>
-          </div>
 
+          <% end %>
+        </div>
+      </div>
     </div>
-
-    <div class="d-flex justify-content-center align-items-center" style="padding-top: 3rem; padding-bottom: 3rem;">
-      <%= f.submit "Select Your Preferences →",
-          id: "nextBtn",
-          class: "next-button disabled-state",
-          data: {
-            application_form_target: "submitBtn",
-            action: "click->application-form#validateSubmit"
-          } %>
-    </div>
-  <% end %>
+  </div>
 </div>
 
-<div class="pb-3"></div>
+<style>
+/* Page Header */
+.page-header {
+  background: #f8f9fa;
+  padding: 0.75rem 0 0;
+  text-align: center;
+}
+
+.main-title {
+  font-size: 2rem;
+  font-weight: 700;
+  color: #2d3748;
+  margin-bottom: 0.125rem;
+  text-align: center;
+}
+
+.main-subtitle {
+  font-size: 0.95rem;
+  color: #718096;
+  max-width: 500px;
+  margin: 0 auto 0 auto;
+  line-height: 1.4;
+  text-align: center;
+}
+
+.progress-bar-wrapper {
+  max-width: 500px;
+  margin: 2rem auto 1rem auto;
+  padding: 0 1rem;
+}
+
+.progress-bar {
+  position: relative;
+  height: 4px;
+  background: #e2e8f0;
+  border-radius: 2px;
+  margin-bottom: 2rem;
+}
+
+.progress-fill {
+  height: 100%;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  border-radius: 2px;
+  transition: width 0.3s ease;
+}
+
+.progress-steps {
+  display: flex;
+  justify-content: space-between;
+  position: relative;
+}
+
+.progress-step {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  color: #718096;
+  transition: color 0.3s ease;
+}
+
+.progress-step.active {
+  color: #667eea;
+}
+
+.step-circle {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background: #e2e8f0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 0.5rem;
+  transition: all 0.3s ease;
+  font-size: 0.9rem;
+  color: #718096;
+}
+
+.progress-step.active .step-circle {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+  transform: scale(1.1);
+}
+
+.step-label {
+  font-size: 0.875rem;
+  font-weight: 500;
+  text-align: center;
+}
+
+.main-content {
+  padding: 1rem 0;
+  background: #f8f9fa;
+}
+
+/* Tips Banner */
+.tips-banner {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  border-radius: 16px;
+  padding: 1rem;
+  color: white;
+  margin: 1rem 0;
+  box-shadow: 0 8px 20px rgba(102, 126, 234, 0.25);
+}
+
+.tips-banner-header {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 1rem;
+}
+
+.tips-banner-header i {
+  font-size: 1.25rem;
+  margin-right: 0.5rem;
+  color: #ffd700;
+}
+
+.tips-banner-header h3 {
+  margin: 0;
+  font-size: 1.125rem;
+  font-weight: 600;
+}
+
+.tips-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  font-size: 0.9rem;
+  line-height: 1.5;
+  columns: 3;
+  column-gap: 2rem;
+}
+
+.tips-list li {
+  margin-bottom: 0.5rem;
+  break-inside: avoid;
+  padding-left: 1.5rem;
+  position: relative;
+}
+
+.tips-list li::before {
+  content: "•";
+  color: #ffd700;
+  font-weight: bold;
+  position: absolute;
+  left: 0;
+  top: 0;
+}
+
+.form-wrapper {
+  background: white;
+  border-radius: 20px;
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+  overflow: hidden;
+}
+
+.form-section {
+  padding: 1.25rem;
+  border-bottom: 1px solid #e2e8f0;
+}
+
+.form-section:last-of-type {
+  border-bottom: none;
+}
+
+.section-header {
+  display: flex;
+  align-items: flex-start;
+  margin-bottom: 1rem;
+}
+
+.section-icon {
+  width: 48px;
+  height: 48px;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-right: 1rem;
+  flex-shrink: 0;
+}
+
+.section-icon i {
+  font-size: 1.25rem;
+  color: white;
+}
+
+.section-content {
+  flex: 1;
+}
+
+.section-title {
+  font-size: 1.25rem;
+  font-weight: 600;
+  color: #2d3748;
+  margin: 0 0 0.25rem 0;
+}
+
+.section-description {
+  color: #718096;
+  margin: 0;
+  font-size: 0.95rem;
+}
+
+.upload-area {
+  position: relative;
+}
+
+.upload-zone {
+  display: block;
+  position: relative;
+  border: 2px dashed #cbd5e0;
+  border-radius: 16px;
+  padding: 2rem 1.5rem;
+  text-align: center;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  background: #fafbfc;
+}
+
+.upload-zone:hover {
+  border-color: #667eea;
+  background: #f7fafc;
+  transform: translateY(-2px);
+}
+
+.upload-content {
+  position: relative;
+  z-index: 1;
+}
+
+.upload-icon {
+  font-size: 3rem;
+  color: #667eea;
+  margin-bottom: 1rem;
+}
+
+.upload-title {
+  font-size: 1.125rem;
+  font-weight: 600;
+  color: #2d3748;
+  margin-bottom: 0.5rem;
+}
+
+.upload-subtitle {
+  color: #718096;
+  margin: 0;
+  font-size: 0.9rem;
+}
+
+.job-textarea {
+  width: 100%;
+  border: 2px solid #e2e8f0;
+  border-radius: 12px;
+  padding: 1rem;
+  font-size: 0.95rem;
+  line-height: 1.6;
+  resize: vertical;
+  min-height: 200px;
+  transition: border-color 0.3s ease, box-shadow 0.3s ease;
+  background: #fafbfc;
+}
+
+.job-textarea:focus {
+  outline: none;
+  border-color: #667eea;
+  box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+  background: white;
+}
+
+.character-info {
+  display: flex;
+  align-items: center;
+  color: #718096;
+  font-size: 0.875rem;
+  margin-top: 0.75rem;
+}
+
+.character-info i {
+  margin-right: 0.5rem;
+  color: #667eea;
+}
+
+.action-buttons {
+  padding: 1.25rem;
+  background: #f8f9fa;
+  text-align: center;
+}
+
+.button-group {
+  display: flex;
+  gap: 1rem;
+  justify-content: center;
+  margin-bottom: 1rem;
+  flex-wrap: wrap;
+}
+
+.btn-secondary, .btn-primary {
+  display: inline-flex;
+  align-items: center;
+  padding: 0.75rem 2rem;
+  border-radius: 12px;
+  font-weight: 600;
+  text-decoration: none;
+  transition: all 0.3s ease;
+  border: none;
+  cursor: pointer;
+  font-size: 0.95rem;
+}
+
+.btn-secondary {
+  background: #e2e8f0;
+  color: #4a5568;
+}
+
+.btn-secondary:hover {
+  background: #cbd5e0;
+  transform: translateY(-2px);
+  color: #2d3748;
+}
+
+.btn-primary {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+  box-shadow: 0 4px 15px rgba(102, 126, 234, 0.4);
+}
+
+.btn-primary:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(102, 126, 234, 0.5);
+}
+
+.btn-primary::after {
+  content: " ";
+  background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="white" class="bi bi-arrow-right" viewBox="0 0 16 16"><path fill-rule="evenodd" d="M1 8a.5.5 0 0 1 .5-.5h11.793l-3.147-3.146a.5.5 0 0 1 .708-.708l4 4a.5.5 0 0 1 0 .708l-4 4a.5.5 0 0 1-.708-.708L13.293 8.5H1.5A.5.5 0 0 1 1 8z"/></svg>') no-repeat center;
+  width: 16px;
+  height: 16px;
+  display: inline-block;
+  margin-left: 0.5rem;
+}
+
+.security-note {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #718096;
+  font-size: 0.875rem;
+  margin-top: 1rem;
+}
+
+.security-note i {
+  margin-right: 0.5rem;
+  color: #48bb78;
+}
+
+@media (max-width: 992px) {
+  .tips-list {
+    columns: 2;
+    column-gap: 1.5rem;
+  }
+}
+
+@media (max-width: 768px) {
+  .page-header {
+    padding: 0.5rem 0 0;
+  }
+
+  .main-title {
+    font-size: 1.75rem;
+  }
+
+  .main-content {
+    padding: 0.75rem 0;
+  }
+
+  .tips-list {
+    columns: 1;
+  }
+
+  .form-section {
+    padding: 1rem;
+  }
+
+  .section-header {
+    flex-direction: column;
+    text-align: center;
+  }
+
+  .section-icon {
+    margin: 0 auto 1rem auto;
+  }
+
+  .upload-zone {
+    padding: 2rem 1rem;
+  }
+
+  .upload-icon {
+    font-size: 2.5rem;
+  }
+
+  .button-group {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .btn-secondary, .btn-primary {
+    width: 100%;
+    max-width: 300px;
+    justify-content: center;
+  }
+
+  .btn-primary[data-mobile-text]::before {
+    content: attr(data-mobile-text);
+  }
+
+  .btn-primary[data-mobile-text] {
+    font-size: 0;
+  }
+
+  .btn-primary[data-mobile-text]::after {
+    margin-left: 0.5rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .page-header {
+    padding: 0.25rem 0 0;
+  }
+
+  .main-title {
+    font-size: 1.5rem;
+    margin-bottom: 0.1rem;
+  }
+
+  .main-subtitle {
+    font-size: 0.875rem;
+  }
+
+  .step-circle {
+    width: 35px;
+    height: 35px;
+    font-size: 0.8rem;
+  }
+
+  .step-label {
+    font-size: 0.8rem;
+  }
+
+  .tips-banner {
+    padding: 1rem;
+    margin: 1rem 0;
+  }
+
+  .tips-list {
+    columns: 1;
+    font-size: 0.85rem;
+  }
+
+  .form-section {
+    padding: 1rem;
+  }
+}
+</style>
+

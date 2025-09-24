@@ -106,7 +106,7 @@
               <h6 class="mb-0 fw-semibold text-dark">Copy Cover Letter Text</h6>
             </div>
             <div class="d-flex gap-2 align-items-center">
-              <textarea class="form-control flex-grow-1 border-0" id="coverLetterText" readonly rows="4" style="font-size: 0.9rem; background-color: #f8f9fa; padding: 12px 16px; border-radius: 12px; resize: none;"><%= (@application.finals.last&.cl || '').gsub(/<[^>]*>/, '') %></textarea>
+              <textarea class="form-control flex-grow-1 border-0" id="coverLetterText" readonly rows="4" style="font-size: 0.9rem; background-color: #f8f9fa; padding: 12px 16px; border-radius: 12px; resize: none;"><%= (@application.finals.last&.coverletter_content || '').gsub(/<[^>]*>/, '') %></textarea>
               <button class="btn flex-shrink-0 d-flex align-items-center justify-content-center" type="button" data-action="click->copy-share#copyContent" data-copy-share-content-id-param="coverLetterText" title="Copy text" style="width: 44px; height: 44px; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); border: none; border-radius: 12px; color: white;">
                 <i class="bi bi-copy" style="font-size: 1.1rem;"></i>
               </button>
@@ -124,7 +124,7 @@
           </div>
           <div class="row g-3">
             <div class="col-12">
-              <a href="mailto:?subject=Cover Letter for <%= @application.title %>&body=<%= ERB::Util.url_encode((@application.finals.last&.cl || '').gsub(/<[^>]*>/, '')) %>" id="emailCoverLetter" class="btn w-100 d-flex align-items-center justify-content-center text-decoration-none" target="_blank" style="padding: 16px 12px; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; border: none; border-radius: 14px; box-shadow: 0 4px 15px rgba(102, 126, 234, 0.4);">
+              <a href="mailto:?subject=Cover Letter for <%= @application.title %>&body=<%= ERB::Util.url_encode((@application.finals.last&.coverletter_content || '').gsub(/<[^>]*>/, '')) %>" id="emailCoverLetter" class="btn w-100 d-flex align-items-center justify-content-center text-decoration-none" target="_blank" style="padding: 16px 12px; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; border: none; border-radius: 14px; box-shadow: 0 4px 15px rgba(102, 126, 234, 0.4);">
                 <i class="bi bi-envelope me-2" style="font-size: 1.3rem;"></i>
                 <span class="fw-semibold">Send Cover Letter via Email</span>
               </a>

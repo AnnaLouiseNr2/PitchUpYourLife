@@ -1,31 +1,417 @@
+<!-- Page Header -->
 <div class="page-header">
-  <h1 class="page-title">Generating your Cover Letter and Video Pitch</h1>
-  <h2 class="page-subtitle">
-    Please wait while we prepare your personalized documents
-  </h2>
-</div>
-
-<div class="d-flex justify-content-center">
-  <div class="d-flex flex-column align-items-center p-5 rounded-4" style="max-width: 500px; width: 100%;">
-    <div class="spinner-border text-primary mb-4" role="status" style="width: 4rem; height: 4rem;">
-      <span class="visually-hidden">Loading...</span>
+  <div class="container">
+    <div class="row">
+      <div class="col-12">
+        <h1 class="main-title">Generating Your Application</h1>
+        <h2 class="main-subtitle">
+          Please wait while we create your personalized documents using AI
+        </h2>
+      </div>
     </div>
-    <h4 class="text-muted mb-3">Creating your documents...</h4>
-    <div class="progress w-100 mb-3" style="height: 8px;">
-      <div class="progress-bar progress-bar-striped progress-bar-animated" role="progressbar" style="width: 75%"></div>
-    </div>
-    <small class="text-muted">This usually takes 10-20 seconds</small>
   </div>
 </div>
 
-<script>
-  async function checkStatus() {
-    const res = await fetch("<%= status_application_path(@application) %>");
-    const json = await res.json();
+<!-- Main Content -->
+<div class="main-content">
+  <div class="container">
+    <div class="row justify-content-center">
+      <div class="col-12" style="max-width: 1400px; margin: 0 auto;">
+        <div class="form-wrapper">
+          <!-- Generation Status -->
+          <div class="generation-section">
+            <div class="spinner-container">
+              <div class="custom-spinner">
+                <div class="spinner-ring"></div>
+                <div class="spinner-ring"></div>
+                <div class="spinner-ring"></div>
+              </div>
+            </div>
 
-    if (json.cl_status === "done" && json.video_status === "done") {
-      window.location.href = "<%= overview_application_path(@application) %>";
+            <h3 class="status-title">Processing your application...</h3>
+            <p class="status-description">This usually takes 10-20 seconds</p>
+
+            <div class="progress-container">
+              <div class="progress-bar-custom">
+                <div class="progress-fill-custom"></div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Progress Steps -->
+          <div class="action-buttons">
+            <div class="progress-bar-wrapper">
+              <div class="progress-bar">
+                <div class="progress-fill" style="width: 75%;"></div>
+              </div>
+              <div class="progress-steps">
+                <div class="progress-step completed">
+                  <div class="step-circle">
+                    <i class="bi bi-check"></i>
+                  </div>
+                  <span class="step-label">Upload Files</span>
+                </div>
+                <div class="progress-step completed">
+                  <div class="step-circle">
+                    <i class="bi bi-check"></i>
+                  </div>
+                  <span class="step-label">Personalize</span>
+                </div>
+                <div class="progress-step active">
+                  <div class="step-circle">
+                    <span>3</span>
+                  </div>
+                  <span class="step-label">Generate</span>
+                </div>
+                <div class="progress-step">
+                  <div class="step-circle">
+                    <span>4</span>
+                  </div>
+                  <span class="step-label">Record</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<style>
+/* Page Header */
+.page-header {
+  background: #f8f9fa;
+  padding: 0.75rem 0 0;
+  text-align: center;
+}
+
+.main-title {
+  font-size: 2rem;
+  font-weight: 700;
+  color: #2d3748;
+  margin-bottom: 0.125rem;
+}
+
+.main-subtitle {
+  font-size: 0.95rem;
+  color: #718096;
+  max-width: 500px;
+  margin: 0 auto;
+  line-height: 1.4;
+}
+
+.main-content {
+  padding: 1rem 0;
+  background: #f8f9fa;
+}
+
+.form-wrapper {
+  background: white;
+  border-radius: 20px;
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+  overflow: hidden;
+}
+
+/* Generation Section */
+.generation-section {
+  padding: 3rem 2rem;
+  text-align: center;
+  border-bottom: 1px solid #e2e8f0;
+}
+
+.spinner-container {
+  margin-bottom: 2rem;
+}
+
+.custom-spinner {
+  position: relative;
+  width: 80px;
+  height: 80px;
+  margin: 0 auto;
+}
+
+.spinner-ring {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  border: 3px solid transparent;
+  border-top: 3px solid #667eea;
+  border-radius: 50%;
+  animation: spin 1.5s linear infinite;
+}
+
+.spinner-ring:nth-child(2) {
+  width: 60px;
+  height: 60px;
+  top: 10px;
+  left: 10px;
+  border-top-color: #764ba2;
+  animation-duration: 1.2s;
+  animation-direction: reverse;
+}
+
+.spinner-ring:nth-child(3) {
+  width: 40px;
+  height: 40px;
+  top: 20px;
+  left: 20px;
+  border-top-color: #48bb78;
+  animation-duration: 0.9s;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+.status-title {
+  font-size: 1.5rem;
+  font-weight: 600;
+  color: #2d3748;
+  margin-bottom: 0.5rem;
+}
+
+.status-description {
+  color: #718096;
+  font-size: 1rem;
+  margin-bottom: 2rem;
+}
+
+.progress-container {
+  max-width: 300px;
+  margin: 0 auto;
+}
+
+.progress-bar-custom {
+  width: 100%;
+  height: 8px;
+  background: #e2e8f0;
+  border-radius: 4px;
+  overflow: hidden;
+}
+
+.progress-fill-custom {
+  height: 100%;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  border-radius: 4px;
+  width: 75%;
+  animation: progressAnimation 2s ease-in-out infinite;
+}
+
+@keyframes progressAnimation {
+  0%, 100% { width: 60%; }
+  50% { width: 90%; }
+}
+
+/* Progress Steps */
+.action-buttons {
+  padding: 1.25rem;
+  background: #f8f9fa;
+  text-align: center;
+}
+
+.progress-bar-wrapper {
+  max-width: 500px;
+  margin: 0 auto;
+  padding: 0 1rem;
+}
+
+.progress-bar {
+  position: relative;
+  height: 4px;
+  background: #e2e8f0;
+  border-radius: 2px;
+  margin-bottom: 2rem;
+}
+
+.progress-fill {
+  height: 100%;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  border-radius: 2px;
+  transition: width 0.3s ease;
+}
+
+.progress-steps {
+  display: flex;
+  justify-content: space-between;
+  position: relative;
+}
+
+.progress-step {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  color: #718096;
+  transition: color 0.3s ease;
+}
+
+.progress-step.active {
+  color: #667eea;
+}
+
+.progress-step.completed {
+  color: #667eea;
+}
+
+.step-circle {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background: #e2e8f0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 0.5rem;
+  transition: all 0.3s ease;
+  font-size: 0.9rem;
+  color: #718096;
+}
+
+.progress-step.active .step-circle,
+.progress-step.completed .step-circle {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+  transform: scale(1.1);
+}
+
+.step-label {
+  font-size: 0.875rem;
+  font-weight: 500;
+  text-align: center;
+}
+
+/* Mobile Responsiveness */
+@media (max-width: 768px) {
+  .page-header {
+    padding: 0.5rem 0 0;
+  }
+
+  .main-title {
+    font-size: 1.75rem;
+  }
+
+  .main-content {
+    padding: 0.75rem 0;
+  }
+
+  .generation-section {
+    padding: 2rem 1rem;
+  }
+
+  .custom-spinner {
+    width: 60px;
+    height: 60px;
+  }
+
+  .spinner-ring:nth-child(2) {
+    width: 45px;
+    height: 45px;
+    top: 7.5px;
+    left: 7.5px;
+  }
+
+  .spinner-ring:nth-child(3) {
+    width: 30px;
+    height: 30px;
+    top: 15px;
+    left: 15px;
+  }
+
+  .status-title {
+    font-size: 1.25rem;
+  }
+
+  .step-circle {
+    width: 35px;
+    height: 35px;
+    font-size: 0.8rem;
+  }
+
+  .step-label {
+    font-size: 0.8rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .main-title {
+    font-size: 1.5rem;
+  }
+
+  .main-subtitle {
+    font-size: 0.875rem;
+  }
+
+  .generation-section {
+    padding: 1.5rem 1rem;
+  }
+}
+</style>
+
+<script>
+  let checkCount = 0;
+  const maxChecks = 60; // 2 minutes max
+
+  async function checkStatus() {
+    try {
+      checkCount++;
+      console.log(`Status check ${checkCount}:`, new Date().toLocaleTimeString());
+
+      const res = await fetch("<%= status_application_path(@application) %>");
+      const json = await res.json();
+
+      console.log('Status response:', json);
+
+      // Check for completion
+      if (json.coverletter_status === "done" && json.video_status === "done") {
+        console.log('Generation completed, redirecting...');
+        window.location.href = "<%= overview_application_path(@application) %>";
+        return;
+      }
+
+      // Check for errors
+      if (json.coverletter_status && json.coverletter_status.startsWith("error:")) {
+        console.error('Cover letter generation error:', json.coverletter_status);
+        showError("Cover letter generation failed: " + json.coverletter_status.replace("error: ", ""));
+        return;
+      }
+
+      if (json.video_status && json.video_status.startsWith("error:")) {
+        console.error('Video generation error:', json.video_status);
+        showError("Video pitch generation failed: " + json.video_status.replace("error: ", ""));
+        return;
+      }
+
+      // Check for timeout
+      if (checkCount >= maxChecks) {
+        console.error('Generation timeout after', maxChecks * 2, 'seconds');
+        showError("Generation is taking longer than expected. Please try refreshing the page or contact support.");
+        return;
+      }
+
+    } catch (error) {
+      console.error('Error checking status:', error);
+      showError("Error checking generation status. Please refresh the page.");
     }
   }
-  setInterval(checkStatus, 2000);
+
+  function showError(message) {
+    const statusTitle = document.querySelector('.status-title');
+    const statusDescription = document.querySelector('.status-description');
+    const spinner = document.querySelector('.custom-spinner');
+
+    if (statusTitle) statusTitle.textContent = 'Generation Error';
+    if (statusDescription) statusDescription.innerHTML = message + '<br><br><a href="<%= prompt_selection_application_path(@application) %>" class="btn btn-primary">Try Again</a>';
+    if (spinner) spinner.style.display = 'none';
+  }
+
+  // Start checking immediately and then every 2 seconds
+  checkStatus();
+  const intervalId = setInterval(() => {
+    if (checkCount >= maxChecks) {
+      clearInterval(intervalId);
+    } else {
+      checkStatus();
+    }
+  }, 2000);
 </script>

@@ -1,9 +1,9 @@
 require "pdf/reader"
-require "open-uri"
+require "stringio"
 # Service class to extract plain text from a CV PDF attached to an Application.
 #
 # How it works:
-# - Opens the CV file directly from its URL (ActiveStorage/Cloudinary).
+# - Downloads the CV file content directly using ActiveStorage.
 # - Uses the PDF::Reader gem to parse the PDF contents.
 # - Iterates through each page and concatenates the page text into a single string.
 # - Returns the full text of the CV.
@@ -14,13 +14,31 @@ require "open-uri"
 class CvTextExtractor
 
 def self.call(application)
-  pdf_file = URI.open(application.cv.url)
-  reader = PDF::Reader.new(pdf_file)
-  text = ""
-  reader.pages.each do |page|
-    text << page.text
+  # Check if CV is attached
+  unless application.cv.attached?
+    raise "No CV file attached to application"
   end
-  text
+
+  # Use ActiveStorage to download the file content directly
+  pdf_content = application.cv.download
+
+  # Check if the file content is empty
+  if pdf_content.blank?
+    raise "CV file is empty or could not be downloaded"
+  end
+
+  begin
+    reader = PDF::Reader.new(StringIO.new(pdf_content))
+    text = ""
+    reader.pages.each do |page|
+      text << page.text
+    end
+    text
+  rescue PDF::Reader::MalformedPDFError => e
+    raise "CV file appears to be corrupted or not a valid PDF: #{e.message}"
+  rescue => e
+    raise "Error processing CV file: #{e.message}"
+  end
 end
 
 end
